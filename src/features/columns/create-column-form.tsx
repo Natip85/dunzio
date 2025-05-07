@@ -49,8 +49,6 @@ export default function CreateColumnForm({ projectId }: Props) {
     setOpen(false);
   };
 
-  console.log("erros: ", form.formState.errors);
-
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
