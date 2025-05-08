@@ -49,46 +49,7 @@ export default function ProjectBoard({ project }: Props) {
       },
     }),
   );
-  // async function handleDragEnd(event: DragEndEvent) {
-  //   const { active, over } = event;
-  //   if (!active || !over) return;
 
-  //   const activeType = active.data.current?.type;
-
-  //   if (activeType === "column") {
-  //     const oldIndex = columns.findIndex(
-  //       (col) => `column-${col.id}` === active.id,
-  //     );
-  //     const newIndex = columns.findIndex(
-  //       (col) => `column-${col.id}` === over.id,
-  //     );
-
-  //     if (oldIndex === -1 || newIndex === -1 || oldIndex === newIndex) return;
-
-  //     const reordered = arrayMove(columns, oldIndex, newIndex);
-
-  //     const reindexed = reordered.map((col, index) => ({
-  //       id: col.id,
-  //       position: index,
-  //     }));
-
-  //     setColumns(reordered);
-  //     await updateColumnPositions(reindexed);
-  //   }
-
-  //   if (activeType === "task") {
-  //     const taskId = +active.id.toString().replace("task-", "");
-  //     const newColumnId = +over.id.toString().replace("column-", "");
-
-  //     setTasks((prev) =>
-  //       prev.map((task) =>
-  //         task.id === taskId ? { ...task, columnId: newColumnId } : task,
-  //       ),
-  //     );
-
-  //     await updateTaskColumn({ taskId, columnId: newColumnId });
-  //   }
-  // }
   async function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
     if (!active || !over) return;

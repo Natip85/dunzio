@@ -11,47 +11,26 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { MoreHorizontal } from "lucide-react";
+import { Edit2Icon, MoreHorizontal, Trash2Icon } from "lucide-react";
+import { useState } from "react";
+import { ResponsiveDialog } from "@/components/ui/responsive-dialog";
 interface Props {
   column: ColumnSelect;
   tasks?: TaskSelect[];
 }
 
 export default function Columns({ column, tasks }: Props) {
+  const [isEditOpen, setIsEditOpen] = useState(false);
+
   const { setNodeRef } = useDroppable({
     id: `column-${column.id}`,
   });
 
   return (
-    <div className="relative w-80">
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild className="absolute top-0 right-0">
-          <Button size={"sm"} variant="ghost">
-            <MoreHorizontal />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-56">
-          <DropdownMenuLabel>Tasks</DropdownMenuLabel>
-          <DropdownMenuGroup>
-            <DropdownMenuItem>
-              Delete all tasks
-              <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-            </DropdownMenuItem>
-          </DropdownMenuGroup>
-          <DropdownMenuSeparator />
-          <DropdownMenuLabel>Column</DropdownMenuLabel>
-          <DropdownMenuGroup>
-            <DropdownMenuItem>
-              Delete column
-              <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-            </DropdownMenuItem>
-          </DropdownMenuGroup>
-        </DropdownMenuContent>
-      </DropdownMenu>
+    <div className="w-80">
       <div className="flex items-center gap-2">
         <h2 className="font-semibold">{column.name}</h2>
         <span className="flex size-5 items-center justify-center rounded-full bg-gray-300 text-sm">
