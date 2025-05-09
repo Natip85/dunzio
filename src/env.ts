@@ -12,7 +12,6 @@ export const env = createEnv({
     EMAIL_FROM: z.string(),
     AUTH_RESEND_KEY: z.string(),
     DATABASE_URL: z.string().url(),
-    BASE_URL: z.string().url(),
     NODE_ENV: z
       .enum(["development", "test", "production"])
       .default("development"),
@@ -24,6 +23,8 @@ export const env = createEnv({
    * `NEXT_PUBLIC_`.
    */
   client: {
+    NEXT_PUBLIC_BASE_URL: z.string().url(),
+
     // NEXT_PUBLIC_CLIENTVAR: z.string(),
   },
 
@@ -37,7 +38,7 @@ export const env = createEnv({
     AUTH_RESEND_KEY: process.env.AUTH_RESEND_KEY,
     EMAIL_FROM: process.env.EMAIL_FROM ?? "noreply@yarcone.com",
     DATABASE_URL: process.env.DATABASE_URL,
-    BASE_URL: process.env.BASE_URL,
+    NEXT_PUBLIC_BASE_URL: process.env.BASE_URL,
     NODE_ENV: process.env.NODE_ENV,
 
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
