@@ -14,6 +14,7 @@ export default function TaskCard({ task }: Props) {
     id: `task-${task.id}`,
     data: { type: "task" } satisfies DragItemData,
   });
+  console.log("fff");
 
   const style = {
     transform: transform
