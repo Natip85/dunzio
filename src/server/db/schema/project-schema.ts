@@ -86,6 +86,8 @@ export const tasksRelations = relations(tasks, ({ one }) => ({
   }),
 }));
 
+// ---------------- Labels ----------------
+
 // export const labels = pgTable("labels", {
 //   id: serial("id").primaryKey(),
 //   name: text("name").notNull(),

@@ -1,4 +1,4 @@
-import ProjectBoard from "@/features/projects/project-board";
+import ProjectBoardClientWrapper from "@/features/projects/project-board-wrapper";
 import { api } from "@/trpc/server";
 
 type Props = {
@@ -11,7 +11,7 @@ export default async function ProjectPage({ params }: Props) {
 
   return (
     <div className="flex-1 overflow-y-auto p-2 md:p-5">
-      <ProjectBoard project={project} />
+      <ProjectBoardClientWrapper project={project} />{" "}
     </div>
   );
 }

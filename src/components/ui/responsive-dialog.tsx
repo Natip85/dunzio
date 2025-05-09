@@ -1,6 +1,4 @@
 "use client";
-
-import { Button } from "./button";
 import {
   Dialog,
   DialogContent,
@@ -8,14 +6,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "./dialog";
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-} from "./drawer";
 
 export function ResponsiveDialog({
   children,

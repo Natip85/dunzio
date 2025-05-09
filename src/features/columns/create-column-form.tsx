@@ -45,8 +45,8 @@ export default function CreateColumnForm({ projectId }: Props) {
 
   const onSubmit = async (values: ColumnCreateSelect) => {
     await create({ ...values, projectId });
-    router.refresh();
     setOpen(false);
+    router.refresh();
   };
 
   return (

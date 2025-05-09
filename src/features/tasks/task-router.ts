@@ -10,7 +10,6 @@ export const taskRouter = createTRPCRouter({
   byId: protectedProcedure.input(z.number()).query(async ({ ctx, input }) => {
     const data = await ctx.db.query.tasks.findFirst({
       where: eq(tasks.id, input),
-      with: {},
     });
     return data;
   }),

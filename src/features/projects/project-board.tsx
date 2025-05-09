@@ -1,5 +1,6 @@
 "use client";
-import { useEffect, useState } from "react";
+
+import { useState } from "react";
 import type { TaskSelect } from "../tasks/task-types";
 import type { DragItemData, Project } from "./project-types";
 import { api } from "@/trpc/react";
@@ -21,24 +22,18 @@ import DraggableColumn from "../columns/draggable-column";
 import CreateColumnForm from "../columns/create-column-form";
 
 interface Props {
-  project?: Project;
+  project: Project;
 }
 
 export default function ProjectBoard({ project }: Props) {
-  const [tasks, setTasks] = useState<TaskSelect[]>([]);
-  const [columns, setColumns] = useState(project?.cols ?? []);
+  const [tasks, setTasks] = useState<TaskSelect[]>(
+    project.cols.flatMap((col) => col.colTasks) ?? [],
+  );
+  const [columns, setColumns] = useState(project.cols ?? []);
   const { mutateAsync: updateTaskColumn } =
     api.task.updateTaskColumn.useMutation();
   const { mutateAsync: updateColumnPositions } =
     api.column.updateColumnPositions.useMutation();
-
-  useEffect(() => {
-    if (project?.cols) {
-      const allTasks = project.cols.flatMap((col) => col.colTasks);
-      setTasks(allTasks);
-      setColumns(project.cols);
-    }
-  }, [project]);
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -113,7 +108,7 @@ export default function ProjectBoard({ project }: Props) {
             />
           ))}
 
-          <CreateColumnForm projectId={project?.id} />
+          <CreateColumnForm projectId={project.id} />
         </div>
       </SortableContext>
     </DndContext>
