@@ -51,6 +51,7 @@ CREATE TABLE "dunzio_columns" (
 	"project_id" integer,
 	"name" text NOT NULL,
 	"description" text,
+	"position" integer DEFAULT 0 NOT NULL,
 	"created_at" timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	"updated_at" timestamp with time zone
 );
