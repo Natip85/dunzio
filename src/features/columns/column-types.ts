@@ -15,7 +15,7 @@ export const columnCreateSelectSchema = createSelectSchema(columns)
     projectId: true,
   })
   .extend({
-    projectId: z.number().optional(),
+    projectId: z.number().nullable().optional(),
   });
 
 export type ColumnCreateSelect = z.infer<typeof columnCreateSelectSchema>;

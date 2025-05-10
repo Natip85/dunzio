@@ -16,7 +16,7 @@ export default function Columns({ column, tasks }: Props) {
   });
 
   return (
-    <div className="w-80">
+    <div className="max-h-[60vh] w-80 overflow-y-auto">
       <div className="flex items-center gap-2">
         <h2 className="font-semibold">{column.name}</h2>
         <span className="flex size-5 items-center justify-center rounded-full bg-gray-300 text-sm">
@@ -28,7 +28,11 @@ export default function Columns({ column, tasks }: Props) {
       </h3>
       <div ref={setNodeRef} className="flex flex-1 flex-col gap-4">
         {tasks.map((task) => {
-          return <TaskCard key={task.id} task={task} />;
+          return (
+            <div key={task.id}>
+              <TaskCard key={task.id} task={task} />
+            </div>
+          );
         })}
       </div>
     </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { TaskSelect } from "../tasks/task-types";
 import type { DragItemData, Project } from "./project-types";
 import { api } from "@/trpc/react";
@@ -8,10 +8,9 @@ import {
   DndContext,
   type DragEndEvent,
   closestCenter,
-  PointerSensor,
   useSensor,
   useSensors,
-  TouchSensor,
+  MouseSensor,
 } from "@dnd-kit/core";
 import {
   SortableContext,
@@ -26,22 +25,20 @@ interface Props {
 }
 
 export default function ProjectBoard({ project }: Props) {
-  const [tasks, setTasks] = useState<TaskSelect[]>(
-    project.cols.flatMap((col) => col.colTasks) ?? [],
-  );
-  const [columns, setColumns] = useState(project.cols ?? []);
+  const [tasks, setTasks] = useState<TaskSelect[]>([]);
+  const [columns, setColumns] = useState(project.cols);
   const { mutateAsync: updateTaskColumn } =
     api.task.updateTaskColumn.useMutation();
   const { mutateAsync: updateColumnPositions } =
     api.column.updateColumnPositions.useMutation();
-
+  useEffect(() => {
+    setColumns(project.cols);
+    setTasks(project.cols.flatMap((col) => col.colTasks));
+  }, [project]);
   const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(TouchSensor, {
-      activationConstraint: {
-        delay: 250,
-        tolerance: 5,
-      },
+    useSensor(MouseSensor, {
+      onActivation: (event) => event.event.stopPropagation(),
+      activationConstraint: { distance: 1 },
     }),
   );
 

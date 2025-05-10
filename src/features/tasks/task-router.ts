@@ -5,6 +5,7 @@ import { eq } from "drizzle-orm";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { tasks } from "@/server/db/schema";
 import { z } from "zod";
+import { taskCreateSelectSchema } from "./task-types";
 
 export const taskRouter = createTRPCRouter({
   byId: protectedProcedure.input(z.number()).query(async ({ ctx, input }) => {
@@ -28,5 +29,36 @@ export const taskRouter = createTRPCRouter({
         });
       }
       return updated[0];
+    }),
+  create: protectedProcedure
+    .input(taskCreateSelectSchema)
+    .mutation(async ({ ctx, input }) => {
+      if (!ctx.session.user) {
+        throw new TRPCError({ code: "UNAUTHORIZED" });
+      }
+
+      return ctx.db.transaction(async (tx) => {
+        const { title, description, projectId, columnId } = input;
+        if (!input.columnId) {
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: "Column not found",
+          });
+        }
+
+        const [newTask] = await tx
+          .insert(tasks)
+          .values({ title, description, projectId, columnId })
+          .returning();
+
+        if (!newTask) {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Task creation failed",
+          });
+        }
+
+        return newTask.id;
+      });
     }),
 });

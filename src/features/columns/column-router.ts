@@ -64,4 +64,55 @@ export const columnRouter = createTRPCRouter({
         return newColumn.id;
       });
     }),
+  edit: protectedProcedure
+    .input(
+      z.object({
+        id: z.number(),
+        name: z.string().min(1),
+        description: z.string().optional().nullable(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { id, name, description } = input;
+
+      if (!ctx.session.user) {
+        throw new TRPCError({ code: "UNAUTHORIZED" });
+      }
+
+      const updated = await ctx.db
+        .update(columns)
+        .set({ name, description })
+        .where(eq(columns.id, id))
+        .returning();
+
+      if (!updated[0]) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Column not found or update failed",
+        });
+      }
+
+      return updated[0].projectId;
+    }),
+  delete: protectedProcedure
+    .input(z.number())
+    .mutation(async ({ ctx, input }) => {
+      if (!ctx.session.user) {
+        throw new TRPCError({ code: "UNAUTHORIZED" });
+      }
+
+      const updated = await ctx.db
+        .delete(columns)
+        .where(eq(columns.id, input))
+        .returning();
+
+      if (!updated[0]) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Column not found or update failed",
+        });
+      }
+
+      return updated[0];
+    }),
 });
