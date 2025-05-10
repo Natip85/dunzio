@@ -5,7 +5,7 @@ import { eq } from "drizzle-orm";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { tasks } from "@/server/db/schema";
 import { z } from "zod";
-import { taskCreateSelectSchema } from "./task-types";
+import { taskCreateSelectSchema, taskSelectSchema } from "./task-types";
 
 export const taskRouter = createTRPCRouter({
   byId: protectedProcedure.input(z.number()).query(async ({ ctx, input }) => {
@@ -60,5 +60,48 @@ export const taskRouter = createTRPCRouter({
 
         return newTask.id;
       });
+    }),
+  delete: protectedProcedure
+    .input(z.number())
+    .mutation(async ({ ctx, input }) => {
+      if (!ctx.session.user) {
+        throw new TRPCError({ code: "UNAUTHORIZED" });
+      }
+
+      const updated = await ctx.db
+        .delete(tasks)
+        .where(eq(tasks.id, input))
+        .returning();
+
+      if (!updated[0]) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Tasks not found or update failed",
+        });
+      }
+
+      return updated[0];
+    }),
+  editTitle: protectedProcedure
+    .input(taskSelectSchema)
+    .mutation(async ({ ctx, input }) => {
+      if (!ctx.session.user) {
+        throw new TRPCError({ code: "UNAUTHORIZED" });
+      }
+
+      const updated = await ctx.db
+        .update(tasks)
+        .set({ title: input.title })
+        .where(eq(tasks.id, input.id))
+        .returning();
+
+      if (!updated[0]) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Task title not found or update failed",
+        });
+      }
+
+      return updated[0];
     }),
 });
