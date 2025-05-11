@@ -20,11 +20,14 @@ import { Sheet, SheetContent, SheetHeader } from "@/components/ui/sheet";
 import { useState } from "react";
 import { Separator } from "@/components/ui/separator";
 import EditTaskTitleForm from "./edit-task-title-form";
+import CommentCard from "./comment-card";
+import { authClient } from "@/lib/auth-client";
 interface Props {
   task: TaskSelect;
 }
 
 export default function TaskCard({ task }: Props) {
+  const session = authClient.useSession().data;
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
@@ -99,7 +102,14 @@ export default function TaskCard({ task }: Props) {
 
             <Separator />
           </SheetHeader>
-          <div className="grid gap-4 py-4">{task.description}</div>
+          <div className="p-2">
+            <CommentCard
+              text={task.description}
+              createdAt={task.createdAt}
+              name={session?.user.name}
+              image={session?.user.image}
+            />
+          </div>
         </SheetContent>
       </Sheet>
     </div>

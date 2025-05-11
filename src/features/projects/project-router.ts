@@ -1,6 +1,6 @@
 import { TRPCError } from "@trpc/server";
 
-import { eq } from "drizzle-orm";
+import { eq, desc } from "drizzle-orm";
 
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { projectSelectSchema } from "./project-types";
@@ -71,5 +71,14 @@ export const projectRouter = createTRPCRouter({
       throw new TRPCError({ code: "UNAUTHORIZED" });
     }
     return data;
+  }),
+  getAll: protectedProcedure.query(async ({ ctx }) => {
+    if (!ctx.session.user) {
+      throw new TRPCError({ code: "UNAUTHORIZED" });
+    }
+
+    return await ctx.db.query.projects.findMany({
+      orderBy: desc(projects.createdAt),
+    });
   }),
 });

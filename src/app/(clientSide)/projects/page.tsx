@@ -1,3 +1,4 @@
+import { DataTable } from "@/components/table/data-table";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Card,
@@ -15,10 +16,13 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import CreateProjectForm from "@/features/projects/create-project-form";
+import { columns } from "@/features/projects/projects-columns";
+import { api } from "@/trpc/server";
 import { PlusIcon } from "lucide-react";
 import Link from "next/link";
 
-export default function ProjectsPage() {
+export default async function ProjectsPage() {
+  const projects = await api.project.getAll();
   return (
     <div className="flex flex-1 flex-col gap-5 p-2 md:p-5">
       <div>
@@ -62,6 +66,9 @@ export default function ProjectsPage() {
             </div>
           </DialogContent>
         </Dialog>
+      </div>
+      <div>
+        <DataTable data={projects} columns={columns} />
       </div>
     </div>
   );
