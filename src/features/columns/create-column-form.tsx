@@ -29,6 +29,17 @@ import {
 import { PlusIcon } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { useState } from "react";
+import { Badge } from "@/components/ui/badge";
+export const COLOR_OPTIONS = [
+  "primary/20",
+  "red-300",
+  "orange-300",
+  "yellow-300",
+  "green-300",
+  "sky-300",
+  "purple-300",
+  "pink-300",
+];
 interface Props {
   projectId: number | undefined;
 }
@@ -49,6 +60,9 @@ export default function CreateColumnForm({ projectId }: Props) {
     router.refresh();
   };
 
+  const watchedName = form.watch("name") ?? form.getValues("name");
+  const watchedColor = form.watch("color") ?? "primary/20";
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -64,6 +78,14 @@ export default function CreateColumnForm({ projectId }: Props) {
         <div className="w-full">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+              <div className="bg-primary/20 rounded-md px-3 py-2 text-center font-semibold">
+                <Badge
+                  variant={"outline"}
+                  className={`rounded-full border-${watchedColor} bg-${watchedColor} border opacity-50`}
+                >
+                  {watchedName}
+                </Badge>
+              </div>
               <FormField
                 control={form.control}
                 name="name"
@@ -72,6 +94,32 @@ export default function CreateColumnForm({ projectId }: Props) {
                     <FormLabel>Name *</FormLabel>
                     <FormControl>
                       <Input type="text" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="color"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Color</FormLabel>
+                    <FormControl>
+                      <div className="flex flex-wrap gap-2">
+                        {COLOR_OPTIONS.map((color) => (
+                          <button
+                            key={color}
+                            type="button"
+                            onClick={() => field.onChange(color)}
+                            className={`bg-${color} h-8 w-8 rounded-full border-2 ${
+                              field.value === color
+                                ? "ring-2 ring-black ring-offset-2"
+                                : ""
+                            }`}
+                          />
+                        ))}
+                      </div>
                     </FormControl>
                     <FormMessage />
                   </FormItem>

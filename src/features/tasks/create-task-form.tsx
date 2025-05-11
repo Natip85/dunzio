@@ -18,18 +18,25 @@ import { api } from "@/trpc/react";
 import { useRouter } from "next/navigation";
 import { type TaskCreateSelect, taskCreateSelectSchema } from "./task-types";
 import { DialogClose, DialogFooter } from "@/components/ui/dialog";
+import { authClient } from "@/lib/auth-client";
 interface Props {
   projectId: number | null;
   columnId: number;
 }
 export default function CreateTaskForm({ projectId, columnId }: Props) {
   const router = useRouter();
+  const session = authClient.useSession().data;
   const { mutateAsync: create, isPending: isLoading } =
     api.task.create.useMutation();
 
   const form = useForm<TaskCreateSelect>({
     resolver: zodResolver(taskCreateSelectSchema),
-    defaultValues: { columnId, projectId, description: "" },
+    defaultValues: {
+      columnId,
+      projectId,
+      description: "",
+      createdBy: session?.user.id,
+    },
   });
 
   const onSubmit = async (values: TaskCreateSelect) => {

@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -5,6 +6,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { MoreHorizontal } from "lucide-react";
 import Image from "next/image";
 
@@ -13,11 +21,13 @@ export default function CommentCard({
   createdAt,
   text,
   image,
+  setEdit,
 }: {
   name?: string;
   createdAt: Date;
   text: string | null;
   image?: string | null;
+  setEdit?: (val: boolean) => void;
 }) {
   return (
     <div className="flex w-full gap-5">
@@ -36,7 +46,20 @@ export default function CommentCard({
             <CardDescription>{createdAt.toLocaleDateString()}</CardDescription>
           </div>
           <div>
-            <MoreHorizontal />
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant={"ghost"}>
+                  <MoreHorizontal />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuGroup>
+                  <DropdownMenuItem onClick={() => setEdit?.(true)}>
+                    Edit
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </CardHeader>
         <CardContent className="p-2">

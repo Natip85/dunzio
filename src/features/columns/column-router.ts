@@ -35,7 +35,7 @@ export const columnRouter = createTRPCRouter({
       }
 
       return ctx.db.transaction(async (tx) => {
-        const { name, description, projectId } = input;
+        const { name, description, projectId, color } = input;
         if (!input.projectId) {
           throw new TRPCError({
             code: "NOT_FOUND",
@@ -51,7 +51,13 @@ export const columnRouter = createTRPCRouter({
 
         const [newColumn] = await tx
           .insert(columns)
-          .values({ name, description, position: newPosition, projectId })
+          .values({
+            name,
+            description,
+            position: newPosition,
+            projectId,
+            color,
+          })
           .returning();
 
         if (!newColumn) {
@@ -70,10 +76,11 @@ export const columnRouter = createTRPCRouter({
         id: z.number(),
         name: z.string().min(1),
         description: z.string().optional().nullable(),
+        color: z.string(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      const { id, name, description } = input;
+      const { id, name, description, color } = input;
 
       if (!ctx.session.user) {
         throw new TRPCError({ code: "UNAUTHORIZED" });
@@ -81,7 +88,7 @@ export const columnRouter = createTRPCRouter({
 
       const updated = await ctx.db
         .update(columns)
-        .set({ name, description })
+        .set({ name, description, color })
         .where(eq(columns.id, id))
         .returning();
 

@@ -11,6 +11,9 @@ export const taskRouter = createTRPCRouter({
   byId: protectedProcedure.input(z.number()).query(async ({ ctx, input }) => {
     const data = await ctx.db.query.tasks.findFirst({
       where: eq(tasks.id, input),
+      with: {
+        createdBy: true,
+      },
     });
     return data;
   }),
@@ -48,7 +51,13 @@ export const taskRouter = createTRPCRouter({
 
         const [newTask] = await tx
           .insert(tasks)
-          .values({ title, description, projectId, columnId })
+          .values({
+            title,
+            description,
+            projectId,
+            columnId,
+            createdBy: ctx.session.user.id,
+          })
           .returning();
 
         if (!newTask) {
@@ -92,6 +101,28 @@ export const taskRouter = createTRPCRouter({
       const updated = await ctx.db
         .update(tasks)
         .set({ title: input.title })
+        .where(eq(tasks.id, input.id))
+        .returning();
+
+      if (!updated[0]) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Task title not found or update failed",
+        });
+      }
+
+      return updated[0];
+    }),
+  editDescription: protectedProcedure
+    .input(taskSelectSchema)
+    .mutation(async ({ ctx, input }) => {
+      if (!ctx.session.user) {
+        throw new TRPCError({ code: "UNAUTHORIZED" });
+      }
+
+      const updated = await ctx.db
+        .update(tasks)
+        .set({ description: input.description })
         .where(eq(tasks.id, input.id))
         .returning();
 

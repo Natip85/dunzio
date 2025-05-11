@@ -1,8 +1,7 @@
 "use client";
 
 import { useDraggable } from "@dnd-kit/core";
-import type { TaskSelect } from "./task-types";
-import type { DragItemData } from "../projects/project-types";
+import type { DragItemData, Project } from "../projects/project-types";
 import { cn } from "@/lib/utils";
 import {
   DropdownMenu,
@@ -20,14 +19,12 @@ import { Sheet, SheetContent, SheetHeader } from "@/components/ui/sheet";
 import { useState } from "react";
 import { Separator } from "@/components/ui/separator";
 import EditTaskTitleForm from "./edit-task-title-form";
-import CommentCard from "./comment-card";
-import { authClient } from "@/lib/auth-client";
+import EditDescriptionForm from "./edit-description-form";
 interface Props {
-  task: TaskSelect;
+  task: Project["cols"][number]["colTasks"][number];
 }
 
 export default function TaskCard({ task }: Props) {
-  const session = authClient.useSession().data;
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
@@ -99,17 +96,9 @@ export default function TaskCard({ task }: Props) {
         <SheetContent side="taskSide">
           <SheetHeader>
             <EditTaskTitleForm task={task} />
-
             <Separator />
           </SheetHeader>
-          <div className="p-2">
-            <CommentCard
-              text={task.description}
-              createdAt={task.createdAt}
-              name={session?.user.name}
-              image={session?.user.image}
-            />
-          </div>
+          <EditDescriptionForm task={task} />
         </SheetContent>
       </Sheet>
     </div>

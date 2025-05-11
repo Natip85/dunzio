@@ -2,9 +2,6 @@ import { text, integer, serial, index } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 import { user } from ".";
 import * as Utils from "./utils";
-// import * as C from "./schema-constants";
-
-// const taskTypeEnum = pgEnum("task_type", C.TaskTypes);
 
 // ---------------- Projects ----------------
 export const projects = Utils.createTable(
@@ -40,6 +37,7 @@ export const columns = Utils.createTable(
     }),
     name: text("name").notNull(),
     description: text("description"),
+    color: text("color").notNull().default("#CCCCCC"),
     position: integer("position").notNull().default(0),
     ...Utils.createUpdateTimestamps,
   },
@@ -67,6 +65,9 @@ export const tasks = Utils.createTable(
       onDelete: "cascade",
     }),
     projectId: integer("task_project_id").references(() => projects.id),
+    createdBy: Utils.userId().references(() => user.id, {
+      onDelete: "cascade",
+    }),
     ...Utils.createUpdateTimestamps,
   },
   (table) => ({
@@ -84,20 +85,8 @@ export const tasksRelations = relations(tasks, ({ one }) => ({
     fields: [tasks.projectId],
     references: [projects.id],
   }),
+  createdBy: one(user, {
+    fields: [tasks.createdBy],
+    references: [user.id],
+  }),
 }));
-
-// ---------------- Labels ----------------
-
-// export const labels = pgTable("labels", {
-//   id: serial("id").primaryKey(),
-//   name: text("name").notNull(),
-//   color: text("color"), // hex or tailwind class
-//   projectId: integer("project_id").references(() => projects.id, {
-//     onDelete: "cascade",
-//   }),
-// });
-
-// export const taskLabels = pgTable("task_labels", {
-//   taskId: integer("task_id").references(() => tasks.id, { onDelete: "cascade" }),
-//   labelId: integer("label_id").references(() => labels.id, { onDelete: "cascade" }),
-// });

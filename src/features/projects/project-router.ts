@@ -36,16 +36,19 @@ export const projectRouter = createTRPCRouter({
             projectId: newProject.id,
             name: "Todo",
             description: "Tasks that haven't been started yet",
+            color: "green-300",
           },
           {
             projectId: newProject.id,
             name: "In Progress",
             description: "Tasks actively being worked on",
+            color: "yellow-300",
           },
           {
             projectId: newProject.id,
             name: "Done",
             description: "Tasks that have been completed",
+            color: "purple-300",
           },
         ]);
         return newProject.id;
@@ -62,7 +65,7 @@ export const projectRouter = createTRPCRouter({
         cols: {
           // orderBy: desc(columns.position),
           with: {
-            colTasks: true,
+            colTasks: { with: { createdBy: true } },
           },
         },
       },
