@@ -72,6 +72,9 @@ export const projectRouter = createTRPCRouter({
     // if (data?.userId !== ctx.session.user.id) {
     //   throw new TRPCError({ code: "UNAUTHORIZED" });
     // }
+    if (!data) {
+      throw new TRPCError({ code: "NOT_FOUND", message: "Project not found" });
+    }
     return data;
   }),
   getAll: protectedProcedure.query(async ({ ctx }) => {
