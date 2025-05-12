@@ -25,7 +25,7 @@ interface Props {
 }
 
 export default function ProjectBoard({ project }: Props) {
-  const [tasks, setTasks] = useState<TaskSelect[]>([]);
+  const [tasks, setTasks] = useState<Project["cols"][number]["colTasks"]>([]);
   const [columns, setColumns] = useState(project.cols);
   const { mutateAsync: updateTaskColumn } =
     api.task.updateTaskColumn.useMutation();
