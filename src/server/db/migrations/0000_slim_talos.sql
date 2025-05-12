@@ -51,7 +51,17 @@ CREATE TABLE "dunzio_columns" (
 	"project_id" integer,
 	"name" text NOT NULL,
 	"description" text,
+	"color" text DEFAULT '#CCCCCC' NOT NULL,
 	"position" integer DEFAULT 0 NOT NULL,
+	"created_at" timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+	"updated_at" timestamp with time zone
+);
+--> statement-breakpoint
+CREATE TABLE "dunzio_comments" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"task_id" integer NOT NULL,
+	"user_id" varchar(500) NOT NULL,
+	"content" text NOT NULL,
 	"created_at" timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	"updated_at" timestamp with time zone
 );
@@ -70,6 +80,7 @@ CREATE TABLE "dunzio_tasks" (
 	"description" text,
 	"column_id" integer,
 	"task_project_id" integer,
+	"user_id" varchar(500) NOT NULL,
 	"created_at" timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	"updated_at" timestamp with time zone
 );
@@ -77,10 +88,15 @@ CREATE TABLE "dunzio_tasks" (
 ALTER TABLE "account" ADD CONSTRAINT "account_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "session" ADD CONSTRAINT "session_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "dunzio_columns" ADD CONSTRAINT "dunzio_columns_project_id_dunzio_projects_id_fk" FOREIGN KEY ("project_id") REFERENCES "public"."dunzio_projects"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "dunzio_comments" ADD CONSTRAINT "dunzio_comments_task_id_dunzio_tasks_id_fk" FOREIGN KEY ("task_id") REFERENCES "public"."dunzio_tasks"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "dunzio_comments" ADD CONSTRAINT "dunzio_comments_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "dunzio_projects" ADD CONSTRAINT "dunzio_projects_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "dunzio_tasks" ADD CONSTRAINT "dunzio_tasks_column_id_dunzio_columns_id_fk" FOREIGN KEY ("column_id") REFERENCES "public"."dunzio_columns"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "dunzio_tasks" ADD CONSTRAINT "dunzio_tasks_task_project_id_dunzio_projects_id_fk" FOREIGN KEY ("task_project_id") REFERENCES "public"."dunzio_projects"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "dunzio_tasks" ADD CONSTRAINT "dunzio_tasks_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 CREATE INDEX "column_project_id_idx" ON "dunzio_columns" USING btree ("project_id");--> statement-breakpoint
+CREATE INDEX "comment_task_id_idx" ON "dunzio_comments" USING btree ("task_id");--> statement-breakpoint
+CREATE INDEX "comment_user_id_idx" ON "dunzio_comments" USING btree ("user_id");--> statement-breakpoint
 CREATE INDEX "project_name_idx" ON "dunzio_projects" USING btree ("name");--> statement-breakpoint
 CREATE INDEX "project_user_id_idx" ON "dunzio_projects" USING btree ("user_id");--> statement-breakpoint
 CREATE INDEX "task_project_id_idx" ON "dunzio_tasks" USING btree ("task_project_id");--> statement-breakpoint

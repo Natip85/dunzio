@@ -13,6 +13,7 @@ export const taskRouter = createTRPCRouter({
       where: eq(tasks.id, input),
       with: {
         createdBy: true,
+        comments: true,
       },
     });
     return data;

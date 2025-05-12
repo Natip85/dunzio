@@ -57,7 +57,7 @@ export default function EditDescriptionForm({ task }: Props) {
   };
   console.log("errors: ", form.formState.errors);
   return (
-    <div className="p-2">
+    <div>
       {edit ? (
         <div className="flex w-full gap-5">
           <div className="relative size-10">
@@ -71,8 +71,10 @@ export default function EditDescriptionForm({ task }: Props) {
           <Card className="border-primary flex-1 rounded-md border p-0">
             <CardHeader className="bg-primary/20 border-primary flex items-center justify-between rounded-t-md border-b p-2">
               <div className="flex items-center gap-2">
-                <CardTitle>namee</CardTitle>
-                <CardDescription>created at</CardDescription>
+                <CardTitle>{task.createdBy.name}</CardTitle>
+                <CardDescription>
+                  {task.createdBy.createdAt.toLocaleDateString()}
+                </CardDescription>
               </div>
               <div>
                 <DropdownMenu>
@@ -140,7 +142,7 @@ export default function EditDescriptionForm({ task }: Props) {
         <CommentCard
           text={task.description}
           createdAt={task.createdAt}
-          name={""}
+          name={task.createdBy.name}
           image={task.createdBy.image}
           setEdit={() => setEdit(true)}
         />

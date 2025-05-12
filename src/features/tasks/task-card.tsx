@@ -20,6 +20,7 @@ import { useState } from "react";
 import { Separator } from "@/components/ui/separator";
 import EditTaskTitleForm from "./edit-task-title-form";
 import EditDescriptionForm from "./edit-description-form";
+import AddComment from "../comments/add-comment";
 interface Props {
   task: Project["cols"][number]["colTasks"][number];
 }
@@ -98,7 +99,12 @@ export default function TaskCard({ task }: Props) {
             <EditTaskTitleForm task={task} />
             <Separator />
           </SheetHeader>
-          <EditDescriptionForm task={task} />
+          <div className="p-2">
+            <EditDescriptionForm task={task} />
+            <div>
+              <AddComment task={task} />
+            </div>
+          </div>
         </SheetContent>
       </Sheet>
     </div>

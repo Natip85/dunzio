@@ -61,7 +61,8 @@ export default function EditColumnForm({ column, setOpen }: Props) {
           <div className="bg-primary/20 rounded-md px-3 py-2 text-center font-semibold">
             <Badge
               variant={"outline"}
-              className={`rounded-full border-${watchedColor} bg-${watchedColor} border opacity-50`}
+              style={{ backgroundColor: watchedColor }}
+              className={`rounded-full border opacity-50`}
             >
               {watchedName}
             </Badge>
@@ -92,11 +93,12 @@ export default function EditColumnForm({ column, setOpen }: Props) {
                         key={color}
                         type="button"
                         onClick={() => field.onChange(color)}
-                        className={`bg-${color} h-8 w-8 rounded-full border-2 ${
+                        className={`h-8 w-8 rounded-full border-2 ${
                           field.value === color
                             ? "ring-2 ring-black ring-offset-2"
                             : ""
                         }`}
+                        style={{ backgroundColor: color }}
                       />
                     ))}
                   </div>

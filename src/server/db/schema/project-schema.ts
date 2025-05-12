@@ -76,7 +76,7 @@ export const tasks = Utils.createTable(
   }),
 );
 
-export const tasksRelations = relations(tasks, ({ one }) => ({
+export const tasksRelations = relations(tasks, ({ one, many }) => ({
   column: one(columns, {
     fields: [tasks.columnId],
     references: [columns.id],
@@ -87,6 +87,38 @@ export const tasksRelations = relations(tasks, ({ one }) => ({
   }),
   createdBy: one(user, {
     fields: [tasks.createdBy],
+    references: [user.id],
+  }),
+  comments: many(comments),
+}));
+
+// ---------------- Comments ----------------
+export const comments = Utils.createTable(
+  "comments",
+  {
+    id: serial("id").primaryKey(),
+    taskId: integer("task_id")
+      .notNull()
+      .references(() => tasks.id, { onDelete: "cascade" }),
+    userId: Utils.userId()
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    content: text("content").notNull(),
+    ...Utils.createUpdateTimestamps,
+  },
+  (table) => ({
+    taskIdIdx: index("comment_task_id_idx").on(table.taskId),
+    userIdIdx: index("comment_user_id_idx").on(table.userId),
+  }),
+);
+
+export const commentsRelations = relations(comments, ({ one }) => ({
+  task: one(tasks, {
+    fields: [comments.taskId],
+    references: [tasks.id],
+  }),
+  user: one(user, {
+    fields: [comments.userId],
     references: [user.id],
   }),
 }));

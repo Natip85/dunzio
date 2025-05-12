@@ -4,7 +4,6 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import Columns from "./columns";
 import type { ColumnSelect } from "./column-types";
-import type { TaskSelect } from "../tasks/task-types";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -30,10 +29,11 @@ import {
 } from "@/components/ui/dialog";
 import CreateTaskForm from "../tasks/create-task-form";
 import { Separator } from "@/components/ui/separator";
+import type { Project } from "../projects/project-types";
 
 interface Props {
   column: ColumnSelect;
-  tasks: TaskSelect[];
+  tasks: Project["cols"][number]["colTasks"];
 }
 
 export default function DraggableColumn({ column, tasks }: Props) {

@@ -31,14 +31,13 @@ import { Separator } from "@/components/ui/separator";
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 export const COLOR_OPTIONS = [
-  "primary/20",
-  "red-300",
-  "orange-300",
-  "yellow-300",
-  "green-300",
-  "sky-300",
-  "purple-300",
-  "pink-300",
+  "#EF4444",
+  "#F97316",
+  "#EAB308",
+  "#22C55E",
+  "#3B82F6",
+  "#8B5CF6",
+  "#EC4899",
 ];
 interface Props {
   projectId: number | undefined;
@@ -81,7 +80,8 @@ export default function CreateColumnForm({ projectId }: Props) {
               <div className="bg-primary/20 rounded-md px-3 py-2 text-center font-semibold">
                 <Badge
                   variant={"outline"}
-                  className={`rounded-full border-${watchedColor} bg-${watchedColor} border opacity-50`}
+                  className={`rounded-full border opacity-50`}
+                  style={{ backgroundColor: watchedColor }}
                 >
                   {watchedName}
                 </Badge>
@@ -111,8 +111,9 @@ export default function CreateColumnForm({ projectId }: Props) {
                           <button
                             key={color}
                             type="button"
+                            style={{ backgroundColor: color }}
                             onClick={() => field.onChange(color)}
-                            className={`bg-${color} h-8 w-8 rounded-full border-2 ${
+                            className={`h-8 w-8 rounded-full border-2 ${
                               field.value === color
                                 ? "ring-2 ring-black ring-offset-2"
                                 : ""

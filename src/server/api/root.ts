@@ -1,5 +1,6 @@
 import { authRouter } from "@/features/auth/auth-router";
 import { columnRouter } from "@/features/columns/column-router";
+import { commentRouter } from "@/features/comments/comment-router";
 import { projectRouter } from "@/features/projects/project-router";
 import { taskRouter } from "@/features/tasks/task-router";
 import { createCallerFactory, createTRPCRouter } from "@/server/api/trpc";
@@ -14,6 +15,7 @@ export const appRouter = createTRPCRouter({
   project: projectRouter,
   column: columnRouter,
   task: taskRouter,
+  comment: commentRouter,
 });
 
 // export type definition of API

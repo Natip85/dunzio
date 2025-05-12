@@ -36,19 +36,19 @@ export const projectRouter = createTRPCRouter({
             projectId: newProject.id,
             name: "Todo",
             description: "Tasks that haven't been started yet",
-            color: "green-300",
+            color: "#22C55E",
           },
           {
             projectId: newProject.id,
             name: "In Progress",
             description: "Tasks actively being worked on",
-            color: "yellow-300",
+            color: "#EAB308",
           },
           {
             projectId: newProject.id,
             name: "Done",
             description: "Tasks that have been completed",
-            color: "purple-300",
+            color: "#8B5CF6",
           },
         ]);
         return newProject.id;
@@ -63,9 +63,8 @@ export const projectRouter = createTRPCRouter({
       where: eq(projects.id, input),
       with: {
         cols: {
-          // orderBy: desc(columns.position),
           with: {
-            colTasks: { with: { createdBy: true } },
+            colTasks: { with: { createdBy: true, comments: true } },
           },
         },
       },

@@ -2,12 +2,12 @@
 
 import { useDroppable } from "@dnd-kit/core";
 import type { ColumnSelect } from "./column-types";
-import type { TaskSelect } from "../tasks/task-types";
 import TaskCard from "../tasks/task-card";
+import type { Project } from "../projects/project-types";
 
 interface Props {
   column: ColumnSelect;
-  tasks: TaskSelect[];
+  tasks: Project["cols"][number]["colTasks"];
 }
 
 export default function Columns({ column, tasks }: Props) {
@@ -18,7 +18,10 @@ export default function Columns({ column, tasks }: Props) {
   return (
     <div className="max-h-[60vh] w-80 overflow-y-auto">
       <div className="flex items-center gap-2">
-        <div className={`size-5 rounded-full border p-2 bg-${column.color}`} />
+        <div
+          className={`size-5 rounded-full border p-2`}
+          style={{ backgroundColor: column.color }}
+        />
         <h2 className="font-semibold">{column.name}</h2>
         <span className="flex size-5 items-center justify-center rounded-full bg-gray-300 text-sm">
           {tasks.length}
