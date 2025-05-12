@@ -69,9 +69,9 @@ export const projectRouter = createTRPCRouter({
         },
       },
     });
-    if (data?.userId !== ctx.session.user.id) {
-      throw new TRPCError({ code: "UNAUTHORIZED" });
-    }
+    // if (data?.userId !== ctx.session.user.id) {
+    //   throw new TRPCError({ code: "UNAUTHORIZED" });
+    // }
     return data;
   }),
   getAll: protectedProcedure.query(async ({ ctx }) => {

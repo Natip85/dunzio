@@ -1,12 +1,9 @@
-import { eq } from "drizzle-orm";
+import { eq, desc } from "drizzle-orm";
 
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { z } from "zod";
 import { comments } from "@/server/db/schema";
-import {
-  commentCreateSelectSchema,
-  commentSelectSchema,
-} from "./comment-types";
+import { commentCreateSelectSchema } from "./comment-types";
 import { TRPCError } from "@trpc/server";
 
 export const commentRouter = createTRPCRouter({
@@ -49,6 +46,19 @@ export const commentRouter = createTRPCRouter({
         }
 
         return newComment.id;
+      });
+    }),
+  getAllByTask: protectedProcedure
+    .input(z.number())
+    .query(async ({ ctx, input }) => {
+      if (!ctx.session.user) {
+        throw new TRPCError({ code: "UNAUTHORIZED" });
+      }
+
+      return await ctx.db.query.comments.findMany({
+        where: eq(comments.taskId, input),
+        with: { user: true },
+        orderBy: desc(comments.createdAt),
       });
     }),
 });

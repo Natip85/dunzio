@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { TaskSelect } from "../tasks/task-types";
 import type { DragItemData, Project } from "./project-types";
 import { api } from "@/trpc/react";
 import {

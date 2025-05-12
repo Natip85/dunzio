@@ -53,7 +53,7 @@ export default function EditColumnForm({ column, setOpen }: Props) {
   };
 
   const watchedName = form.watch("name") ?? form.getValues("name");
-  const watchedColor = form.watch("color") ?? "primary/20";
+  const watchedColor = form.watch("color") ?? "#6B7280";
   return (
     <div className="w-full">
       <Form {...form}>

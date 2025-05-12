@@ -4,8 +4,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import {
-  commentSelectSchema,
-  type CommentSelect,
   type CommentCreateSelect,
   commentCreateSelectSchema,
 } from "./comment-types";
@@ -32,6 +30,7 @@ interface Props {
 export default function AddComment({ task }: Props) {
   const router = useRouter();
   const session = authClient.useSession().data;
+  const utils = api.useUtils();
   const { mutateAsync: create, isPending: isLoading } =
     api.comment.create.useMutation();
   const form = useForm<CommentCreateSelect>({
@@ -45,6 +44,7 @@ export default function AddComment({ task }: Props) {
   const onSubmit = async (values: CommentCreateSelect) => {
     await create(values);
     router.refresh();
+    await utils.comment.getAllByTask.invalidate(task.id);
   };
   console.log("errors: ", form.formState.errors);
 

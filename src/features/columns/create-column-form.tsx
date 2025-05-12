@@ -31,6 +31,7 @@ import { Separator } from "@/components/ui/separator";
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 export const COLOR_OPTIONS = [
+  "#6B7280",
   "#EF4444",
   "#F97316",
   "#EAB308",
@@ -60,7 +61,7 @@ export default function CreateColumnForm({ projectId }: Props) {
   };
 
   const watchedName = form.watch("name") ?? form.getValues("name");
-  const watchedColor = form.watch("color") ?? "primary/20";
+  const watchedColor = form.watch("color") ?? "#6B7280";
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

@@ -21,6 +21,7 @@ import { Separator } from "@/components/ui/separator";
 import EditTaskTitleForm from "./edit-task-title-form";
 import EditDescriptionForm from "./edit-description-form";
 import AddComment from "../comments/add-comment";
+import CommentThread from "../comments/comment-thread";
 interface Props {
   task: Project["cols"][number]["colTasks"][number];
 }
@@ -99,8 +100,13 @@ export default function TaskCard({ task }: Props) {
             <EditTaskTitleForm task={task} />
             <Separator />
           </SheetHeader>
-          <div className="p-2">
-            <EditDescriptionForm task={task} />
+          <div className="max-h-[100vh] overflow-y-auto p-2">
+            <div>
+              <EditDescriptionForm task={task} />
+            </div>
+            <div>
+              <CommentThread task={task} />
+            </div>
             <div>
               <AddComment task={task} />
             </div>
