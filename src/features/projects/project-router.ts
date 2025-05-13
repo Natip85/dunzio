@@ -62,6 +62,11 @@ export const projectRouter = createTRPCRouter({
     const data = await ctx.db.query.projects.findFirst({
       where: eq(projects.id, input),
       with: {
+        members: {
+          with: {
+            user: true,
+          },
+        },
         cols: {
           with: {
             colTasks: { with: { createdBy: true, comments: true } },
@@ -69,14 +74,23 @@ export const projectRouter = createTRPCRouter({
         },
       },
     });
-    // if (data?.userId !== ctx.session.user.id) {
-    //   throw new TRPCError({ code: "UNAUTHORIZED" });
-    // }
+
     if (!data) {
       throw new TRPCError({ code: "NOT_FOUND", message: "Project not found" });
     }
+
+    const isOwner = data.userId === ctx.session.user.id;
+    const isMember = data.members.some(
+      (member) => member.user.id === ctx.session.user.id,
+    );
+
+    if (!isOwner && !isMember) {
+      throw new TRPCError({ code: "UNAUTHORIZED" });
+    }
+
     return data;
   }),
+
   getAll: protectedProcedure.query(async ({ ctx }) => {
     if (!ctx.session.user) {
       throw new TRPCError({ code: "UNAUTHORIZED" });
@@ -86,4 +100,48 @@ export const projectRouter = createTRPCRouter({
       orderBy: desc(projects.createdAt),
     });
   }),
+  update: protectedProcedure
+    .input(projectSelectSchema)
+    .mutation(async ({ ctx, input }) => {
+      const { name, id } = input;
+      const updated = await ctx.db
+        .update(projects)
+        .set({ name })
+        .where(eq(projects.id, id))
+        .returning();
+      if (!updated) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Something went wrong updating project",
+        });
+      }
+      return updated[0];
+    }),
+  delete: protectedProcedure
+    .input(z.number())
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.session.user.id;
+
+      const project = await ctx.db.query.projects.findFirst({
+        where: eq(projects.id, input),
+      });
+
+      if (!project) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Project not found",
+        });
+      }
+
+      if (project.userId !== userId) {
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+          message: "You do not have permission to delete this project",
+        });
+      }
+
+      await ctx.db.delete(projects).where(eq(projects.id, input));
+
+      return { success: true };
+    }),
 });

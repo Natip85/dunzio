@@ -26,14 +26,18 @@ interface Props {
 export default function ProjectBoard({ project }: Props) {
   const [tasks, setTasks] = useState<Project["cols"][number]["colTasks"]>([]);
   const [columns, setColumns] = useState(project.cols);
+
   const { mutateAsync: updateTaskColumn } =
     api.task.updateTaskColumn.useMutation();
+
   const { mutateAsync: updateColumnPositions } =
     api.column.updateColumnPositions.useMutation();
+
   useEffect(() => {
     setColumns(project.cols);
     setTasks(project.cols.flatMap((col) => col.colTasks));
   }, [project]);
+
   const sensors = useSensors(
     useSensor(MouseSensor, {
       onActivation: (event) => event.event.stopPropagation(),
@@ -95,7 +99,7 @@ export default function ProjectBoard({ project }: Props) {
         items={columns.map((col) => `column-${col.id}`)}
         strategy={horizontalListSortingStrategy}
       >
-        <div className="flex gap-4 overflow-y-auto">
+        <div className="flex min-h-[70vh] gap-4 overflow-y-auto">
           {columns.map((column) => (
             <DraggableColumn
               key={column.id}

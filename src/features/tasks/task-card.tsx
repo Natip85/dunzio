@@ -100,7 +100,7 @@ export default function TaskCard({ task }: Props) {
             <EditTaskTitleForm task={task} />
             <Separator />
           </SheetHeader>
-          <div className="max-h-[100vh] overflow-y-auto p-2">
+          <div className="max-h-[100vh] overflow-y-auto p-5">
             <div>
               <EditDescriptionForm task={task} />
             </div>

@@ -39,7 +39,7 @@ export default function CommentCard({
           className="rounded-full"
         />
       </div>
-      <Card className="border-primary flex-1 rounded-md border p-0">
+      <Card className="border-primary flex-1 rounded-md border-3 p-0">
         <CardHeader className="bg-primary/20 border-primary flex items-center justify-between rounded-t-md border-b p-2">
           <div className="flex items-center gap-2">
             <CardTitle>{name}</CardTitle>

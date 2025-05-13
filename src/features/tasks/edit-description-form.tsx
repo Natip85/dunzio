@@ -57,7 +57,7 @@ export default function EditDescriptionForm({ task }: Props) {
   };
   console.log("errors: ", form.formState.errors);
   return (
-    <div>
+    <div className="mb-10">
       {edit ? (
         <div className="flex w-full gap-5">
           <div className="relative size-10">

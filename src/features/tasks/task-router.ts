@@ -136,4 +136,25 @@ export const taskRouter = createTRPCRouter({
 
       return updated[0];
     }),
+  deleteByColumnId: protectedProcedure
+    .input(z.number())
+    .mutation(async ({ ctx, input: columnId }) => {
+      if (!ctx.session.user) {
+        throw new TRPCError({ code: "UNAUTHORIZED" });
+      }
+
+      const deletedTasks = await ctx.db
+        .delete(tasks)
+        .where(eq(tasks.columnId, columnId))
+        .returning();
+
+      if (deletedTasks.length === 0) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "No tasks found for the specified column",
+        });
+      }
+
+      return deletedTasks;
+    }),
 });

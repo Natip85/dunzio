@@ -40,8 +40,12 @@ export default function DraggableColumn({ column, tasks }: Props) {
   const router = useRouter();
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+
   const { mutateAsync: deleteColumn, isPending: isLoading } =
     api.column.delete.useMutation();
+
+  const { mutateAsync: deleteAllTasks, isPending: isDeleteLoading } =
+    api.task.deleteByColumnId.useMutation();
 
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({
@@ -111,7 +115,14 @@ export default function DraggableColumn({ column, tasks }: Props) {
               tasks.length === 0 ? "pointer-events-none opacity-50" : ""
             }
           >
-            <DropdownMenuItem variant="destructive">
+            <DropdownMenuItem
+              disabled={isDeleteLoading}
+              variant="destructive"
+              onMouseDown={async () => {
+                await deleteAllTasks(column.id);
+                router.refresh();
+              }}
+            >
               <Trash2Icon /> Delete all tasks
             </DropdownMenuItem>
           </DropdownMenuGroup>

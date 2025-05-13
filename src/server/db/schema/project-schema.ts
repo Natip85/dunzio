@@ -25,6 +25,7 @@ export const projectRelations = relations(projects, ({ one, many }) => ({
   }),
   cols: many(columns),
   tasks: many(tasks),
+  members: many(projectMembers),
 }));
 
 // ---------------- Columns ----------------
@@ -64,7 +65,9 @@ export const tasks = Utils.createTable(
     columnId: integer("column_id").references(() => columns.id, {
       onDelete: "cascade",
     }),
-    projectId: integer("task_project_id").references(() => projects.id),
+    projectId: integer("task_project_id").references(() => projects.id, {
+      onDelete: "cascade",
+    }),
     createdBy: Utils.userId().references(() => user.id, {
       onDelete: "cascade",
     }),
@@ -120,5 +123,41 @@ export const commentsRelations = relations(comments, ({ one }) => ({
   user: one(user, {
     fields: [comments.userId],
     references: [user.id],
+  }),
+}));
+
+// ---------------- Members join table ----------------
+export const projectMembers = Utils.createTable(
+  "project_members",
+  {
+    id: serial("id").primaryKey(),
+    projectId: integer("project_id")
+      .notNull()
+      .references(() => projects.id, { onDelete: "cascade" }),
+    userId: Utils.userId()
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    // role: text("role").notNull().default("viewer"), // e.g. 'viewer', 'editor', 'owner'
+    invitedBy: Utils.userId().references(() => user.id, {
+      onDelete: "set null",
+    }),
+    ...Utils.createUpdateTimestamps,
+  },
+  (table) => ({
+    uniqueIdx: index("project_member_unique_idx").on(
+      table.projectId,
+      table.userId,
+    ),
+  }),
+);
+
+export const projectMembersRelations = relations(projectMembers, ({ one }) => ({
+  user: one(user, {
+    fields: [projectMembers.userId],
+    references: [user.id],
+  }),
+  project: one(projects, {
+    fields: [projectMembers.projectId],
+    references: [projects.id],
   }),
 }));
