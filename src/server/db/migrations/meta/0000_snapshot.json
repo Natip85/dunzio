@@ -1,5 +1,5 @@
 {
-  "id": "af403229-548e-4f4b-bdf7-304e5e01b283",
+  "id": "36213fee-6b30-4edd-ae5c-efb875fd86e6",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -798,7 +798,7 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         },
         "dunzio_tasks_user_id_user_id_fk": {
