@@ -54,7 +54,7 @@ export default function EditProjectForm({ project }: Props) {
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold tracking-tight">Project Settings</h2>
+      <h2 className="text-2xl tracking-tight">Project Settings</h2>
       <Separator />
 
       <Form {...form}>

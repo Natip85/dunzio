@@ -1,3 +1,4 @@
+"use client";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -7,14 +8,29 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { type Project } from "./project-types";
 import EditProjectForm from "./edit-project-form";
+import { useQueryState } from "nuqs";
 
 interface Props {
   project: Project;
 }
 
 export default function SettingsClient({ project }: Props) {
+  const [tab, setTab] = useQueryState("tab", {
+    defaultValue: "project",
+    parse: (value) => {
+      // Only allow valid tab values
+      return ["project", "access"].includes(value) ? value : "project";
+    },
+  });
+  const handleTabChange = (value: string) => {
+    setTab(value as "project" | "access");
+  };
   return (
-    <Tabs defaultValue="project" className="flex flex-col gap-6 md:flex-row">
+    <Tabs
+      value={tab}
+      onValueChange={handleTabChange}
+      className="flex flex-col gap-6 md:flex-row"
+    >
       {/* Side Menu */}
       <div className="w-full shrink-0 md:w-64">
         <Card className="p-2">
@@ -36,7 +52,6 @@ export default function SettingsClient({ project }: Props) {
           </TabsList>
         </Card>
       </div>
-
       {/* Content Area */}
       <div className="flex-1">
         <Card className="p-6">
@@ -56,7 +71,7 @@ function ManageAccess() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold tracking-tight">Manage Access</h2>
+        <h2 className="text-2xl tracking-tight">Who has access</h2>
         <p className="text-muted-foreground">
           Control who has access to your project and what permissions they have.
         </p>

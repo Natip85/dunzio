@@ -11,14 +11,21 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import type { ProjectSelect } from "./project-types";
+import { api } from "@/trpc/react";
+import { useRouter } from "next/navigation";
 
 interface ProjectsRowActionsProps {
   row: Row<ProjectSelect>;
 }
 
 export function ProjectsRowActions({ row }: ProjectsRowActionsProps) {
-  console.log(row);
-
+  const router = useRouter();
+  const { mutateAsync: deleteProject, isPending: isDeleteLoading } =
+    api.project.delete.useMutation({
+      onSuccess: () => {
+        router.refresh();
+      },
+    });
   return (
     <div className="flex w-full justify-end pr-5">
       <DropdownMenu>
@@ -32,7 +39,11 @@ export function ProjectsRowActions({ row }: ProjectsRowActionsProps) {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-[160px]">
-          <DropdownMenuItem variant="destructive">
+          <DropdownMenuItem
+            disabled={isDeleteLoading}
+            variant="destructive"
+            onClick={async () => deleteProject(row.original.id)}
+          >
             <Trash2Icon />
             Delete project
           </DropdownMenuItem>
