@@ -69,7 +69,8 @@ CREATE TABLE "dunzio_comments" (
 CREATE TABLE "dunzio_project_members" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"project_id" integer NOT NULL,
-	"user_id" varchar(500) NOT NULL,
+	"user_id" text NOT NULL,
+	"invitedBy" text,
 	"created_at" timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	"updated_at" timestamp with time zone
 );
@@ -99,7 +100,8 @@ ALTER TABLE "dunzio_columns" ADD CONSTRAINT "dunzio_columns_project_id_dunzio_pr
 ALTER TABLE "dunzio_comments" ADD CONSTRAINT "dunzio_comments_task_id_dunzio_tasks_id_fk" FOREIGN KEY ("task_id") REFERENCES "public"."dunzio_tasks"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "dunzio_comments" ADD CONSTRAINT "dunzio_comments_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "dunzio_project_members" ADD CONSTRAINT "dunzio_project_members_project_id_dunzio_projects_id_fk" FOREIGN KEY ("project_id") REFERENCES "public"."dunzio_projects"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "dunzio_project_members" ADD CONSTRAINT "dunzio_project_members_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE set null ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "dunzio_project_members" ADD CONSTRAINT "dunzio_project_members_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "dunzio_project_members" ADD CONSTRAINT "dunzio_project_members_invitedBy_user_id_fk" FOREIGN KEY ("invitedBy") REFERENCES "public"."user"("id") ON DELETE set null ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "dunzio_projects" ADD CONSTRAINT "dunzio_projects_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "dunzio_tasks" ADD CONSTRAINT "dunzio_tasks_column_id_dunzio_columns_id_fk" FOREIGN KEY ("column_id") REFERENCES "public"."dunzio_columns"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "dunzio_tasks" ADD CONSTRAINT "dunzio_tasks_task_project_id_dunzio_projects_id_fk" FOREIGN KEY ("task_project_id") REFERENCES "public"."dunzio_projects"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint

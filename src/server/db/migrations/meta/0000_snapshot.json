@@ -1,5 +1,5 @@
 {
-  "id": "36213fee-6b30-4edd-ae5c-efb875fd86e6",
+  "id": "0034f335-53ac-404d-b443-eb23e1b98441",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -524,9 +524,15 @@
         },
         "user_id": {
           "name": "user_id",
-          "type": "varchar(500)",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
+        },
+        "invitedBy": {
+          "name": "invitedBy",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
         },
         "created_at": {
           "name": "created_at",
@@ -585,6 +591,19 @@
           "tableTo": "user",
           "columnsFrom": [
             "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "dunzio_project_members_invitedBy_user_id_fk": {
+          "name": "dunzio_project_members_invitedBy_user_id_fk",
+          "tableFrom": "dunzio_project_members",
+          "tableTo": "user",
+          "columnsFrom": [
+            "invitedBy"
           ],
           "columnsTo": [
             "id"

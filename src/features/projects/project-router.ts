@@ -6,6 +6,12 @@ import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { projectSelectSchema } from "./project-types";
 import { columns, projectMembers, projects } from "@/server/db/schema";
 import { z } from "zod";
+import { Resend } from "resend";
+import { env } from "@/env";
+import { auth } from "@/server/auth/auth";
+import { headers } from "next/headers";
+
+const resend = new Resend(env.AUTH_RESEND_KEY);
 
 export const projectRouter = createTRPCRouter({
   create: protectedProcedure
@@ -187,6 +193,14 @@ export const projectRouter = createTRPCRouter({
           });
         }
 
+        await auth.api.signInMagicLink({
+          headers: await headers(),
+          body: {
+            email,
+            name,
+            callbackURL: `${process.env.BASE_URL}/projects/${projectId}`,
+          },
+        });
         return newMember.id;
       });
     }),

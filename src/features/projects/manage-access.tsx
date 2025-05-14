@@ -82,7 +82,9 @@ export default function ManageAccess({ project }: Props) {
       <Separator />
       <div className="space-y-4">
         <div className="grid gap-2">
-          <h3 className="text-lg font-medium">Team Members</h3>
+          {projectMembers?.length !== 0 && (
+            <h3 className="text-lg font-medium">Team Members</h3>
+          )}
           {projectMembers?.map((member) => (
             <div key={member.id} className="rounded-md border">
               <div className="p-4">
