@@ -16,7 +16,6 @@ export default function SettingsClient({ project }: Props) {
   const [tab, setTab] = useQueryState("tab", {
     defaultValue: "project",
     parse: (value) => {
-      // Only allow valid tab values
       return ["project", "access"].includes(value) ? value : "project";
     },
   });
@@ -57,7 +56,7 @@ export default function SettingsClient({ project }: Props) {
             <EditProjectForm project={project} />
           </TabsContent>
           <TabsContent value="access" className="m-0">
-            <ManageAccess />
+            <ManageAccess project={project} />
           </TabsContent>
         </Card>
       </div>

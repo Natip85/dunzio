@@ -134,11 +134,11 @@ export const projectMembers = Utils.createTable(
     projectId: integer("project_id")
       .notNull()
       .references(() => projects.id, { onDelete: "cascade" }),
-    userId: Utils.userId()
+    userId: text("user_id")
       .notNull()
       .references(() => user.id, { onDelete: "cascade" }),
     // role: text("role").notNull().default("viewer"), // e.g. 'viewer', 'editor', 'owner'
-    invitedBy: Utils.userId().references(() => user.id, {
+    invitedBy: text().references(() => user.id, {
       onDelete: "set null",
     }),
     ...Utils.createUpdateTimestamps,

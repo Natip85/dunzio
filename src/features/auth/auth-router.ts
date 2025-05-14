@@ -1,5 +1,5 @@
 import { TRPCError } from "@trpc/server";
-import { eq } from "drizzle-orm";
+import { asc, eq } from "drizzle-orm";
 
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { user as userTable } from "@/server/db/schema";
@@ -21,5 +21,21 @@ export const authRouter = createTRPCRouter({
     });
 
     return user;
+  }),
+  getAll: protectedProcedure.query(async ({ ctx }) => {
+    if (!ctx.session.user) {
+      throw new TRPCError({ code: "UNAUTHORIZED" });
+    }
+
+    const users = await ctx.db.query.user.findMany({
+      orderBy: asc(userTable.name),
+    });
+    if (!users) {
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "No users found",
+      });
+    }
+    return users;
   }),
 });

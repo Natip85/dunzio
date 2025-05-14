@@ -22,7 +22,7 @@ import { PlusIcon } from "lucide-react";
 import Link from "next/link";
 
 export default async function ProjectsPage() {
-  const projects = await api.project.getAll();
+  const projects = await api.project.getAllByUser();
   return (
     <div className="flex flex-1 flex-col gap-5 p-2 md:p-5">
       <div>
