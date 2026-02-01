@@ -1,0 +1,4 @@
+{
+  "extends": "@quick-jot/typescript-config/base.json",
+  "include": ["src/**/*", "*.ts", "../../types/**/*.d.ts"]
+}

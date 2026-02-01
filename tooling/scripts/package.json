@@ -1,0 +1,29 @@
+{
+  "name": "@quick-jot/scripts",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "clean": "git clean -xdf .cache .turbo dist node_modules",
+    "typecheck": "tsc --noEmit --emitDeclarationOnly false",
+    "with-env": "dotenv -e ../../.env${ENV:+.${ENV}} --",
+    "x": "pnpm with-env tsx -- ",
+    "format": "prettier --check . --ignore-path ../../.gitignore",
+    "lint": "eslint"
+  },
+  "devDependencies": {
+    "@quick-jot/db": "workspace:*",
+    "@quick-jot/eslint-config": "workspace:*",
+    "@quick-jot/prettier-config": "workspace:*",
+    "@quick-jot/typescript-config": "workspace:*",
+    "@types/node": "catalog:",
+    "dotenv-cli": "catalog:",
+    "drizzle-orm": "catalog:",
+    "eslint": "catalog:",
+    "prettier": "catalog:",
+    "tsx": "catalog:",
+    "typescript": "catalog:",
+    "zod": "catalog:"
+  },
+  "prettier": "@quick-jot/prettier-config"
+}

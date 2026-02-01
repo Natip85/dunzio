@@ -1,0 +1,3 @@
+{
+  "extends": "@quick-jot/typescript-config/base.json"
+}
