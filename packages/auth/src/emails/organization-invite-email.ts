@@ -1,4 +1,4 @@
-import { env } from "@quick-jot/env/src/server";
+import { env } from "@dunzio/env/server";
 
 import { sendEmail } from "./send-email";
 

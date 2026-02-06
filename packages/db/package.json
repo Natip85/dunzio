@@ -1,5 +1,5 @@
 {
-  "name": "@quick-jot/db",
+  "name": "@dunzio/db",
   "type": "module",
   "exports": {
     ".": {
@@ -10,6 +10,12 @@
     },
     "./schema/*": {
       "default": "./src/schema/*.ts"
+    },
+    "./validators": {
+      "default": "./src/validators/index.ts"
+    },
+    "./validators/*": {
+      "default": "./src/validators/*.ts"
     }
   },
   "scripts": {
@@ -22,9 +28,9 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@dunzio/env": "workspace:*",
     "@neondatabase/serverless": "^1.0.2",
     "@paralleldrive/cuid2": "^3.3.0",
-    "@quick-jot/env": "workspace:*",
     "dotenv": "catalog:",
     "drizzle-orm": "^0.45.1",
     "pg": "^8.17.2",
@@ -32,9 +38,9 @@
     "zod": "catalog:"
   },
   "devDependencies": {
-    "@quick-jot/eslint-config": "workspace:*",
-    "@quick-jot/prettier-config": "workspace:*",
-    "@quick-jot/typescript-config": "workspace:*",
+    "@dunzio/eslint-config": "workspace:*",
+    "@dunzio/prettier-config": "workspace:*",
+    "@dunzio/typescript-config": "workspace:*",
     "@types/pg": "^8.16.0",
     "@types/ws": "^8.18.1",
     "drizzle-kit": "^0.31.8",
@@ -42,5 +48,5 @@
     "prettier": "catalog:",
     "typescript": "catalog:"
   },
-  "prettier": "@quick-jot/prettier-config"
+  "prettier": "@dunzio/prettier-config"
 }

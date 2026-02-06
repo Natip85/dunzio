@@ -25,7 +25,7 @@
     "verbatimModuleSyntax": true,
     "baseUrl": "../../",
     "paths": {
-      "@quick-jot/*": ["packages/*"]
+      "@dunzio/*": ["packages/*"]
     },
     "typeRoots": ["../../types", "../../node_modules/@types"]
   },

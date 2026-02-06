@@ -2,11 +2,13 @@ import {
   adminClient,
   inferAdditionalFields,
   lastLoginMethodClient,
+  organizationClient,
   twoFactorClient,
 } from "better-auth/client/plugins";
 import { createAuthClient } from "better-auth/react";
 
-import type { auth } from "@quick-jot/auth";
+import type { auth } from "@dunzio/auth";
+import { ac, admin, user } from "@dunzio/auth/permissions";
 
 export const authClient = createAuthClient({
   plugins: [
@@ -16,7 +18,14 @@ export const authClient = createAuthClient({
         window.location.href = "/2fa";
       },
     }),
-    adminClient(),
+    adminClient({
+      ac,
+      roles: {
+        admin,
+        user,
+      },
+    }),
+    organizationClient(),
     lastLoginMethodClient(),
   ],
 });

@@ -1,5 +1,5 @@
 {
-  "name": "@quick-jot/env",
+  "name": "@dunzio/env",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -19,13 +19,13 @@
     "zod": "catalog:"
   },
   "devDependencies": {
-    "@quick-jot/eslint-config": "workspace:*",
-    "@quick-jot/prettier-config": "workspace:*",
-    "@quick-jot/typescript-config": "workspace:*",
+    "@dunzio/eslint-config": "workspace:*",
+    "@dunzio/prettier-config": "workspace:*",
+    "@dunzio/typescript-config": "workspace:*",
     "@types/node": "catalog:",
     "eslint": "catalog:",
     "prettier": "catalog:",
     "typescript": "catalog:"
   },
-  "prettier": "@quick-jot/prettier-config"
+  "prettier": "@dunzio/prettier-config"
 }

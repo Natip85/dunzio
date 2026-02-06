@@ -8,7 +8,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { createTRPCClient, httpBatchStreamLink, loggerLink } from "@trpc/client";
 import SuperJSON from "superjson";
 
-import type { AppRouter } from "@quick-jot/api";
+import type { AppRouter } from "@dunzio/api";
 
 import { TRPCProvider } from "./";
 import { createQueryClient } from "./query-client";

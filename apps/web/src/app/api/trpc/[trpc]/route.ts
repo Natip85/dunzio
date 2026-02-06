@@ -1,8 +1,8 @@
 import type { NextRequest } from "next/server";
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 
-import { appRouter, createTRPCContext } from "@quick-jot/api";
-import { auth } from "@quick-jot/auth";
+import { appRouter, createTRPCContext } from "@dunzio/api";
+import { auth } from "@dunzio/auth";
 
 function handler(req: NextRequest) {
   return fetchRequestHandler({

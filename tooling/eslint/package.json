@@ -1,5 +1,5 @@
 {
-  "name": "@quick-jot/eslint-config",
+  "name": "@dunzio/eslint-config",
   "private": true,
   "version": "0.3.0",
   "type": "module",
@@ -25,8 +25,8 @@
     "typescript-eslint": "^8.46.2"
   },
   "devDependencies": {
-    "@quick-jot/prettier-config": "workspace:*",
-    "@quick-jot/typescript-config": "workspace:*",
+    "@dunzio/prettier-config": "workspace:*",
+    "@dunzio/typescript-config": "workspace:*",
     "@types/eslint__js": "9.14.0",
     "eslint": "catalog:",
     "eslint-config-prettier": "^10.1.8",
@@ -34,5 +34,5 @@
     "prettier": "catalog:",
     "typescript": "catalog:"
   },
-  "prettier": "@quick-jot/prettier-config"
+  "prettier": "@dunzio/prettier-config"
 }

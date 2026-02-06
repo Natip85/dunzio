@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { Plus, Shield, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
-import type { auth } from "@quick-jot/auth";
+import type { auth } from "@dunzio/auth";
 
 import type { SupportedOAuthProvider } from "@/lib/o-auth-providers";
 import { Button } from "@/components/ui/button";

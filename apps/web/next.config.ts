@@ -1,4 +1,5 @@
-import "@quick-jot/env/web";
+import "@dunzio/env/web";
+
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
@@ -7,7 +8,6 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
-
         protocol: "https",
         hostname: "avatars.githubusercontent.com",
         pathname: "/u/**",

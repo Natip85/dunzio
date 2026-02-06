@@ -1,5 +1,5 @@
 {
-  "name": "@quick-jot/auth",
+  "name": "@dunzio/auth",
   "type": "module",
   "exports": {
     ".": {
@@ -15,20 +15,20 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@quick-jot/db": "workspace:*",
-    "@quick-jot/env": "workspace:*",
+    "@dunzio/db": "workspace:*",
+    "@dunzio/env": "workspace:*",
     "better-auth": "catalog:",
     "dotenv": "catalog:",
     "resend": "^6.8.0",
     "zod": "catalog:"
   },
   "devDependencies": {
-    "@quick-jot/eslint-config": "workspace:*",
-    "@quick-jot/prettier-config": "workspace:*",
-    "@quick-jot/typescript-config": "workspace:*",
+    "@dunzio/eslint-config": "workspace:*",
+    "@dunzio/prettier-config": "workspace:*",
+    "@dunzio/typescript-config": "workspace:*",
     "eslint": "catalog:",
     "prettier": "catalog:",
     "typescript": "catalog:"
   },
-  "prettier": "@quick-jot/prettier-config"
+  "prettier": "@dunzio/prettier-config"
 }

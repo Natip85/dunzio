@@ -4,8 +4,8 @@ import { createUploadthing } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
 import { z } from "zod";
 
-import { auth } from "@quick-jot/auth";
-import { db } from "@quick-jot/db";
+import { auth } from "@dunzio/auth";
+import { db } from "@dunzio/db";
 
 const f = createUploadthing();
 

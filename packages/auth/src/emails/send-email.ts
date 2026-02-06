@@ -1,6 +1,6 @@
 import { Resend } from "resend";
 
-import { env } from "@quick-jot/env/server";
+import { env } from "@dunzio/env/server";
 
 const resend = new Resend(env.RESEND_API_KEY);
 

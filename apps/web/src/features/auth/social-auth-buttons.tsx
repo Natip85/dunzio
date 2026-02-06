@@ -22,7 +22,7 @@ export function SocialAuthButtons() {
         onClick={() => {
           void authClient.signIn.social({
             provider,
-            callbackURL: "/",
+            callbackURL: "/onboarding",
           });
         }}
         className="relative w-full"

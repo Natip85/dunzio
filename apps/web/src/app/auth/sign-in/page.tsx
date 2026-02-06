@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowLeft, Pen } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 
 import { AuthTabs } from "@/features/auth/auth-tabs";
 
@@ -11,19 +11,6 @@ export default function AuthPage() {
         <div className="from-primary/5 absolute -top-40 -right-40 h-80 w-80 rounded-full bg-linear-to-br via-transparent to-transparent blur-3xl" />
         <div className="from-primary/5 absolute -bottom-40 -left-40 h-80 w-80 rounded-full bg-linear-to-tr via-transparent to-transparent blur-3xl" />
       </div>
-
-      {/* Header */}
-      <header className="relative z-10 flex items-center justify-between p-6">
-        <Link
-          href="/"
-          className="flex items-center gap-2"
-        >
-          <div className="bg-foreground flex h-8 w-8 items-center justify-center rounded-lg">
-            <Pen className="text-background h-4 w-4" />
-          </div>
-          <span className="text-foreground text-xl font-semibold tracking-tight">Quick-Jot</span>
-        </Link>
-      </header>
 
       {/* Main Content */}
       <main className="relative z-10 flex flex-col items-center px-6 pt-8 pb-16 md:pt-16">
@@ -44,7 +31,7 @@ export default function AuthPage() {
             Welcome back
           </h1>
           <p className="text-muted-foreground text-sm">
-            Sign in to access your notes across all your devices
+            Sign in to access your account across all your devices
           </p>
         </div>
 
@@ -81,7 +68,7 @@ export default function AuthPage() {
       {/* Footer */}
       <footer className="absolute right-0 bottom-0 left-0 p-6">
         <p className="text-muted-foreground text-center text-xs">
-          Free forever. Your notes, always in sync.
+          Free forever. Your account, always in sync.
         </p>
       </footer>
     </div>

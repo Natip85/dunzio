@@ -3,8 +3,8 @@ import { cache } from "react";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { createTRPCOptionsProxy } from "@trpc/tanstack-react-query";
 
-import type { AppRouter } from "@quick-jot/api";
-import { appRouter, createOuterContext } from "@quick-jot/api";
+import type { AppRouter } from "@dunzio/api";
+import { appRouter, createOuterContext } from "@dunzio/api";
 
 import { createQueryClient } from "./query-client";
 

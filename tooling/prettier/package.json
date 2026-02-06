@@ -1,5 +1,5 @@
 {
-  "name": "@quick-jot/prettier-config",
+  "name": "@dunzio/prettier-config",
   "private": true,
   "version": "0.0.1",
   "type": "module",
@@ -15,5 +15,5 @@
     "prettier": "catalog:",
     "prettier-plugin-tailwindcss": "^0.7.2"
   },
-  "prettier": "@quick-jot/prettier-config"
+  "prettier": "@dunzio/prettier-config"
 }

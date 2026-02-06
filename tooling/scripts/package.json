@@ -1,5 +1,5 @@
 {
-  "name": "@quick-jot/scripts",
+  "name": "@dunzio/scripts",
   "version": "0.0.1",
   "private": true,
   "type": "module",
@@ -12,10 +12,10 @@
     "lint": "eslint"
   },
   "devDependencies": {
-    "@quick-jot/db": "workspace:*",
-    "@quick-jot/eslint-config": "workspace:*",
-    "@quick-jot/prettier-config": "workspace:*",
-    "@quick-jot/typescript-config": "workspace:*",
+    "@dunzio/db": "workspace:*",
+    "@dunzio/eslint-config": "workspace:*",
+    "@dunzio/prettier-config": "workspace:*",
+    "@dunzio/typescript-config": "workspace:*",
     "@types/node": "catalog:",
     "dotenv-cli": "catalog:",
     "drizzle-orm": "catalog:",
@@ -25,5 +25,5 @@
     "typescript": "catalog:",
     "zod": "catalog:"
   },
-  "prettier": "@quick-jot/prettier-config"
+  "prettier": "@dunzio/prettier-config"
 }

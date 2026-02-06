@@ -7,7 +7,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { useSidebarParams } from "./query-params";
 import { RightSidebar, useSidebar } from "./right-sidebar";
 
-export const RightSidebarContainer = () => {
+export const RightSidebarContainer = ({ belowHeader }: { belowHeader?: boolean }) => {
   const { sidebarParams, setSidebarParams } = useSidebarParams();
 
   const pathname = usePathname();
@@ -59,6 +59,7 @@ export const RightSidebarContainer = () => {
   return (
     <RightSidebar
       className="h-full"
+      belowHeader={belowHeader}
       onClose={() => {
         void setSidebarParams(null);
       }}

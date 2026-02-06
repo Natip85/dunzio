@@ -1,4 +1,4 @@
 {
-  "extends": "@quick-jot/typescript-config/base.json",
+  "extends": "@dunzio/typescript-config/base.json",
   "include": ["src/**/*", "*.ts", "../../types/**/*.d.ts"]
 }

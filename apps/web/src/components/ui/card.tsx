@@ -1,4 +1,6 @@
+import type { Route } from "next";
 import * as React from "react";
+import Link from "next/link";
 
 import { cn } from "@/lib/utils";
 
@@ -83,4 +85,39 @@ function CardFooter({ className, ...props }: React.ComponentProps<"div">) {
   );
 }
 
-export { Card, CardHeader, CardFooter, CardTitle, CardAction, CardDescription, CardContent };
+function CardContentLink({
+  className,
+  href,
+  ...props
+}: React.ComponentProps<"div"> & { href?: string }) {
+  if (!href)
+    return (
+      <CardContent
+        className={cn("pointer-events-none h-full", className)}
+        {...props}
+      />
+    );
+
+  return (
+    <Link
+      href={href as Route}
+      className="flex h-full flex-1 flex-col"
+    >
+      <CardContent
+        className={cn("h-full cursor-pointer", className)}
+        {...props}
+      />
+    </Link>
+  );
+}
+
+export {
+  Card,
+  CardHeader,
+  CardFooter,
+  CardTitle,
+  CardAction,
+  CardDescription,
+  CardContent,
+  CardContentLink,
+};

@@ -27,7 +27,7 @@ export function SignInTab({ openEmailVerificationTab, openForgotPassword }: Sign
     },
     onSubmit: async ({ value }) => {
       const res = await authClient.signIn.email(
-        { ...value, callbackURL: "/" },
+        { ...value, callbackURL: "/onboarding" },
         {
           onError: (error) => {
             if (error.error.code === "EMAIL_NOT_VERIFIED") {

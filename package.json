@@ -1,5 +1,5 @@
 {
-  "name": "quick-jot",
+  "name": "dunzio",
   "private": true,
   "workspaces": [
     "apps/*",
@@ -24,10 +24,10 @@
     "lint:no-cache": "turbo run lint -- --cache=false",
     "check-types": "turbo check-types",
     "test": "turbo test",
-    "db:push": "turbo -F @quick-jot/db db:push",
-    "db:studio": "turbo -F @quick-jot/db db:studio",
-    "db:generate": "turbo -F @quick-jot/db db:generate",
-    "db:migrate": "turbo -F @quick-jot/db db:migrate",
+    "db:push": "turbo -F @dunzio/db db:push",
+    "db:studio": "turbo -F @dunzio/db db:studio",
+    "db:generate": "turbo -F @dunzio/db db:generate",
+    "db:migrate": "turbo -F @dunzio/db db:migrate",
     "db:start": "./start-database.sh",
     "db:stop": "./start-database.sh -s",
     "bump-deps": "npx npm-check-updates --deep -u && pnpm install",
@@ -40,10 +40,10 @@
     "prepare": "husky"
   },
   "devDependencies": {
+    "@dunzio/eslint-config": "workspace:*",
+    "@dunzio/prettier-config": "workspace:*",
+    "@dunzio/typescript-config": "workspace:*",
     "@ianvs/prettier-plugin-sort-imports": "^4.7.0",
-    "@quick-jot/eslint-config": "workspace:*",
-    "@quick-jot/prettier-config": "workspace:*",
-    "@quick-jot/typescript-config": "workspace:*",
     "@turbo/gen": "^2.6.3",
     "@types/node": "catalog:",
     "dotenv-cli": "catalog:",
@@ -60,5 +60,5 @@
   "lint-staged": {
     "**/*.{js,mjs,cjs,jsx,ts,mts,cts,tsx,json,md,css}": "prettier --write"
   },
-  "prettier": "@quick-jot/prettier-config"
+  "prettier": "@dunzio/prettier-config"
 }

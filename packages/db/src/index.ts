@@ -1,7 +1,7 @@
 import { drizzle } from "drizzle-orm/node-postgres";
 import pg from "pg";
 
-import { env } from "@quick-jot/env/server";
+import { env } from "@dunzio/env/server";
 
 import * as schema from "./schema";
 

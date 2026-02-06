@@ -23,7 +23,7 @@ export function SignUpTab({ openEmailVerificationTab }: SignUpTabProps) {
     },
     onSubmit: async ({ value }) => {
       const res = await authClient.signUp.email(
-        { ...value, callbackURL: "/" },
+        { ...value, callbackURL: "/onboarding" },
         {
           onError: (error) => {
             toast.error(error.error.message || "Failed to sign up");

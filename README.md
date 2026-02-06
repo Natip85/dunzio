@@ -1,4 +1,4 @@
-# quick-jot
+# dunzio
 
 This project was created with [Better-T-Stack](https://github.com/AmanVarshney01/create-better-t-stack), a modern TypeScript stack that combines Next.js, Self, TRPC, and more.
 
@@ -51,7 +51,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser to see the f
 ## Project Structure
 
 ```
-quick-jot/
+dunzio/
 ├── apps/
 │   └── web/         # Fullstack application (Next.js)
 ├── packages/

@@ -3,8 +3,8 @@ import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
-import { auth } from "@quick-jot/auth";
-import { db } from "@quick-jot/db";
+import { auth } from "@dunzio/auth";
+import { db } from "@dunzio/db";
 
 type AuthSession = Awaited<ReturnType<typeof auth.api.getSession>>;
 

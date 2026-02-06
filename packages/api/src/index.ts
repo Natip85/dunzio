@@ -39,5 +39,5 @@ export {
 };
 export type { AppRouter, RouterInputs, RouterOutputs };
 
-// Client-safe schemas are available via "@quick-jot/api/schemas"
+// Client-safe schemas are available via "@dunzio/api/schemas"
 // Server-side query builders are available via "./lib" internal imports

@@ -10,6 +10,7 @@ import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import { extractRouterConfig } from "uploadthing/server";
 
 import { Providers } from "@/components/providers";
+import { Header } from "@/features/nav/header";
 import { ourFileRouter } from "./api/uploadthing/core";
 
 async function UploadThingSSR() {
@@ -28,8 +29,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Quick Jot",
-  description: "Quick Jot",
+  title: "Dunzio",
+  description: "Dunzio - Track your projects effortlessly",
 };
 
 export default function RootLayout({
@@ -43,14 +44,15 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body
-        className={`${geistSans.variable} ${geistMono.variable} bg-background text-foreground selection:bg-primary/50 selection:text-primary-foreground antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} bg-background text-foreground selection:bg-primary/50 selection:text-primary-foreground flex h-dvh flex-col overflow-hidden antialiased`}
       >
         <NuqsAdapter>
           <Providers>
             <Suspense>
               <UploadThingSSR />
             </Suspense>
-            <Suspense>{children}</Suspense>
+            <Header />
+            {children}
           </Providers>
         </NuqsAdapter>
       </body>

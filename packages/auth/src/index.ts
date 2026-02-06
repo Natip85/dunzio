@@ -3,18 +3,21 @@ import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { nextCookies } from "better-auth/next-js";
 import { lastLoginMethod } from "better-auth/plugins";
 import { admin as adminPlugin } from "better-auth/plugins/admin";
+import { organization } from "better-auth/plugins/organization";
 import { twoFactor } from "better-auth/plugins/two-factor";
 
-import { db } from "@quick-jot/db";
-import * as schema from "@quick-jot/db/schema/auth";
-import { env } from "@quick-jot/env/server";
+import { db } from "@dunzio/db";
+import * as schema from "@dunzio/db/schema/auth";
+import { env } from "@dunzio/env/server";
 
 import { sendDeleteAccountVerificationEmail } from "./emails/delete-account-verification";
 import { sendEmailVerificationEmail } from "./emails/email-verification";
+import { sendOrganizationInviteEmail } from "./emails/organization-invite-email";
 import { sendPasswordResetEmail } from "./emails/password-reset-email";
+import { ac, admin, user } from "./permissions";
 
 export const auth = betterAuth({
-  appName: "My Better T App",
+  appName: "Dunzio",
   user: {
     changeEmail: {
       enabled: true,
@@ -58,7 +61,72 @@ export const auth = betterAuth({
       maxAge: 60 * 1, // 1 minutes
     },
   },
-  plugins: [nextCookies(), twoFactor(), adminPlugin(), lastLoginMethod()],
+  plugins: [
+    nextCookies(),
+    twoFactor(),
+    adminPlugin({
+      ac,
+      roles: {
+        admin,
+        user,
+      },
+    }),
+    organization({
+      sendInvitationEmail: async ({ email, organization, inviter, invitation }) => {
+        await sendOrganizationInviteEmail({
+          invitation,
+          inviter: inviter.user,
+          organization,
+          email,
+        });
+      },
+      // teams: {
+      //   enabled: true,
+      //   maximumTeams: 10, // Optional: limit teams per organization
+      //   allowRemovingAllTeams: false, // Optional: prevent removing the last team
+      // },
+      // allowUserToCreateOrganization: (user) => {
+      //   return user.role === "admin";
+      // },
+      allowUserToCreateOrganization: () => true,
+      // Automatically add the creator AND org owners/admins to new teams
+      organizationHooks: {
+        // afterCreateTeam: async ({ team, user, organization: org }) => {
+        //   // Get org owners and admins
+        //   const orgAdmins = await db.query.member.findMany({
+        //     where: (member, { and, eq, inArray }) =>
+        //       and(eq(member.organizationId, org.id), inArray(member.role, ["owner", "admin"])),
+        //   });
+        //   // Collect all user IDs to add (creator + org admins/owners)
+        //   const userIdsToAdd = new Set<string>();
+        //   // Add the creator if exists
+        //   if (user) {
+        //     userIdsToAdd.add(user.id);
+        //   }
+        //   // Add all org owners and admins
+        //   for (const admin of orgAdmins) {
+        //     userIdsToAdd.add(admin.userId);
+        //   }
+        //   // Insert all team members
+        //   if (userIdsToAdd.size > 0) {
+        //     await db
+        //       .insert(schema.teamMember)
+        //       .values(
+        //         Array.from(userIdsToAdd).map((userId) => ({
+        //           id: crypto.randomUUID().replace(/-/g, ""),
+        //           teamId: team.id,
+        //           userId,
+        //           createdAt: new Date(),
+        //         }))
+        //       )
+        //       .onConflictDoNothing();
+        //   }
+        // },
+      },
+    }),
+
+    lastLoginMethod(),
+  ],
   database: drizzleAdapter(db, {
     provider: "pg",
     schema: schema,
