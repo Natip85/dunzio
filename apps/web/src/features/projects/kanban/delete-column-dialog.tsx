@@ -58,7 +58,7 @@ export function DeleteColumnDialog({
         void queryClient.invalidateQueries({
           queryKey: [["project", "getBoard"]],
         });
-        // Invalidate ALL task queries to ensure moved tasks appear in their new column
+        // Invalidate all task queries to ensure moved tasks appear in their new column
         // refetchType: "all" ensures even inactive queries are refetched
         void queryClient.invalidateQueries({
           queryKey: [["task", "getByColumn"]],
