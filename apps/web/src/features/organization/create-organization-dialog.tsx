@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useForm } from "@tanstack/react-form";
+import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import z from "zod";
 
@@ -25,10 +26,16 @@ const createOrganizationSchema = z.object({
 type CreateOrganizationDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  onSuccess?: () => void;
 };
 
-export function CreateOrganizationDialog({ open, onOpenChange }: CreateOrganizationDialogProps) {
+export function CreateOrganizationDialog({
+  open,
+  onOpenChange,
+  onSuccess,
+}: CreateOrganizationDialogProps) {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const form = useForm({
     defaultValues: {
       name: "",
@@ -51,7 +58,16 @@ export function CreateOrganizationDialog({ open, onOpenChange }: CreateOrganizat
         form.reset();
         onOpenChange(false);
         await authClient.organization.setActive({ organizationId: res.data.id });
-        router.refresh();
+        await Promise.all([
+          queryClient.invalidateQueries({ queryKey: [["organization"]] }),
+          queryClient.invalidateQueries({ queryKey: [["project"]] }),
+          queryClient.invalidateQueries({ queryKey: [["onboarding"]] }),
+        ]);
+        if (onSuccess) {
+          onSuccess();
+        } else {
+          router.refresh();
+        }
       }
     },
     validators: {

@@ -12,9 +12,10 @@ import { authClient } from "@/lib/auth-client";
 
 type SignUpTabProps = {
   openEmailVerificationTab: (email: string) => void;
+  redirectUrl?: string;
 };
 
-export function SignUpTab({ openEmailVerificationTab }: SignUpTabProps) {
+export function SignUpTab({ openEmailVerificationTab, redirectUrl }: SignUpTabProps) {
   const form = useForm({
     defaultValues: {
       name: "",
@@ -23,7 +24,7 @@ export function SignUpTab({ openEmailVerificationTab }: SignUpTabProps) {
     },
     onSubmit: async ({ value }) => {
       const res = await authClient.signUp.email(
-        { ...value, callbackURL: "/onboarding" },
+        { ...value, callbackURL: redirectUrl ?? "/onboarding" },
         {
           onError: (error) => {
             toast.error(error.error.message || "Failed to sign up");

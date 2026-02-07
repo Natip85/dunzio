@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -13,6 +14,7 @@ export function InviteInformation({
   invitation: { id: string; organizationId: string };
 }) {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const [isAccepting, setIsAccepting] = useState(false);
   const [isRejecting, setIsRejecting] = useState(false);
 
@@ -29,8 +31,13 @@ export function InviteInformation({
         await authClient.organization.setActive({
           organizationId: invitation.organizationId,
         });
+        await Promise.all([
+          queryClient.invalidateQueries({ queryKey: [["organization"]] }),
+          queryClient.invalidateQueries({ queryKey: [["project"]] }),
+          queryClient.invalidateQueries({ queryKey: [["onboarding"]] }),
+        ]);
         toast.success("Invitation accepted");
-        router.push("/");
+        router.push("/projects");
       }
     } finally {
       setIsAccepting(false);

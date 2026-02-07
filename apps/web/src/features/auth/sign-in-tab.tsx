@@ -14,9 +14,14 @@ import { authClient } from "@/lib/auth-client";
 type SignInTabProps = {
   openEmailVerificationTab: (email: string) => void;
   openForgotPassword: () => void;
+  redirectUrl?: string;
 };
 
-export function SignInTab({ openEmailVerificationTab, openForgotPassword }: SignInTabProps) {
+export function SignInTab({
+  openEmailVerificationTab,
+  openForgotPassword,
+  redirectUrl,
+}: SignInTabProps) {
   const lastMethod = authClient.getLastUsedLoginMethod();
   const isEmailLastUsed = lastMethod === "email";
 
@@ -27,7 +32,7 @@ export function SignInTab({ openEmailVerificationTab, openForgotPassword }: Sign
     },
     onSubmit: async ({ value }) => {
       const res = await authClient.signIn.email(
-        { ...value, callbackURL: "/onboarding" },
+        { ...value, callbackURL: redirectUrl ?? "/onboarding" },
         {
           onError: (error) => {
             if (error.error.code === "EMAIL_NOT_VERIFIED") {

@@ -1,7 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Check, ChevronsUpDown, Plus } from "lucide-react";
 import { toast } from "sonner";
 
@@ -16,6 +17,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useSidebar } from "@/components/ui/sidebar";
 import { OrgSwitcherSkeleton } from "@/features/loaders";
+import { CreateOrganizationDialog } from "@/features/organization/create-organization-dialog";
 import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
 import { useTRPC } from "@/trpc";
@@ -23,10 +25,12 @@ import { useTRPC } from "@/trpc";
 export function OrgSwitcher() {
   const router = useRouter();
   const trpc = useTRPC();
+  const queryClient = useQueryClient();
   const { state: sidebarState } = useSidebar();
   const isCollapsed = sidebarState === "collapsed";
+  const [createOrgOpen, setCreateOrgOpen] = useState(false);
 
-  const { data, isLoading, refetch } = useQuery(trpc.organization.list.queryOptions());
+  const { data, isLoading } = useQuery(trpc.organization.list.queryOptions());
 
   const organizations = data?.organizations ?? [];
   const activeOrg = organizations.find((org) => org.isActive);
@@ -43,9 +47,12 @@ export function OrgSwitcher() {
         throw new Error(result.error.message ?? "Failed to switch workspace");
       }
 
-      await refetch();
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: [["organization"]] }),
+        queryClient.invalidateQueries({ queryKey: [["project"]] }),
+        queryClient.invalidateQueries({ queryKey: [["onboarding"]] }),
+      ]);
       toast.success("Switched workspace");
-      // Navigate to projects page for the new org
       router.refresh();
       router.push("/projects");
     } catch (error) {
@@ -53,8 +60,10 @@ export function OrgSwitcher() {
     }
   };
 
-  const handleCreateOrg = () => {
-    // Navigate to onboarding which handles org creation
+  const handleCreateOrgSuccess = () => {
+    void queryClient.invalidateQueries({ queryKey: [["organization"]] });
+    void queryClient.invalidateQueries({ queryKey: [["project"]] });
+    void queryClient.invalidateQueries({ queryKey: [["onboarding"]] });
     router.push("/onboarding");
   };
 
@@ -64,16 +73,23 @@ export function OrgSwitcher() {
 
   if (organizations.length === 0) {
     return (
-      <Button
-        variant="ghost"
-        className={cn("w-full justify-start gap-2", isCollapsed && "justify-center px-2")}
-        onClick={handleCreateOrg}
-      >
-        <div className="bg-muted flex h-8 w-8 items-center justify-center rounded-md">
-          <Plus className="h-4 w-4" />
-        </div>
-        {!isCollapsed && <span className="text-sm">Create workspace</span>}
-      </Button>
+      <>
+        <Button
+          variant="ghost"
+          className={cn("w-full justify-start gap-2", isCollapsed && "justify-center px-2")}
+          onClick={() => setCreateOrgOpen(true)}
+        >
+          <div className="bg-muted flex h-8 w-8 items-center justify-center rounded-md">
+            <Plus className="h-4 w-4" />
+          </div>
+          {!isCollapsed && <span className="text-sm">Create workspace</span>}
+        </Button>
+        <CreateOrganizationDialog
+          open={createOrgOpen}
+          onOpenChange={setCreateOrgOpen}
+          onSuccess={handleCreateOrgSuccess}
+        />
+      </>
     );
   }
 
@@ -139,7 +155,7 @@ export function OrgSwitcher() {
         ))}
         <DropdownMenuSeparator />
         <DropdownMenuItem
-          onClick={handleCreateOrg}
+          onClick={() => setCreateOrgOpen(true)}
           className="flex cursor-pointer items-center gap-2"
         >
           <div className="bg-muted flex h-6 w-6 items-center justify-center rounded-md">
@@ -148,6 +164,11 @@ export function OrgSwitcher() {
           <span>Create workspace</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
+      <CreateOrganizationDialog
+        open={createOrgOpen}
+        onOpenChange={setCreateOrgOpen}
+        onSuccess={handleCreateOrgSuccess}
+      />
     </DropdownMenu>
   );
 }
