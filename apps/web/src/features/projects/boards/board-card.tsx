@@ -89,7 +89,7 @@ export function BoardCard({ board, projectId, onEdit, onDelete }: BoardCardProps
                 }}
                 disabled={board.isDefault}
               >
-                Delete
+                Delete board
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

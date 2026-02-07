@@ -90,7 +90,7 @@ export function ProjectCard({ project, onEdit, onDelete }: ProjectCardProps) {
                   onDelete?.(project.id);
                 }}
               >
-                Delete
+                Delete project
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

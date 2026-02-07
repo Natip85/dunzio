@@ -9,6 +9,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { TaskGitHubLinks } from "@/features/github/task-github-links";
 import { EditTaskFormSkeleton } from "@/features/loaders";
 import { useTRPC } from "@/trpc";
 import { EditTaskForm } from "./edit-task-form";
@@ -65,12 +66,15 @@ export function EditTaskDialog({ columns, users }: EditTaskDialogProps) {
           {isLoading ?
             <EditTaskFormSkeleton />
           : task ?
-            <EditTaskForm
-              task={task}
-              columns={columns}
-              users={users}
-              onSuccess={() => void closeIssue()}
-            />
+            <>
+              <EditTaskForm
+                task={task}
+                columns={columns}
+                users={users}
+                onSuccess={() => void closeIssue()}
+              />
+              <TaskGitHubLinks issueId={task.id} />
+            </>
           : null}
         </div>
       </DialogContent>

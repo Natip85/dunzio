@@ -59,6 +59,7 @@ export const DataTable = <TData, TValue>({
   const columnVisibility = externalColumnVisibility ?? internalColumnVisibility;
   const setColumnVisibility = onColumnVisibilityChange ?? setInternalColumnVisibility;
 
+  // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
     data,
     columns,

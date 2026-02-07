@@ -17,6 +17,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { TaskCardGitHubBadge } from "@/features/github/task-card-github-badge";
 import { cn } from "@/lib/utils";
 
 export type Task = {
@@ -149,7 +150,7 @@ function SortableTaskCard({ task, onClick, onDelete }: Omit<TaskCardProps, "isOv
                   onDelete?.(task.id);
                 }}
               >
-                Delete
+                Delete task
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -158,7 +159,7 @@ function SortableTaskCard({ task, onClick, onDelete }: Omit<TaskCardProps, "isOv
         {/* Title */}
         <p className="mb-3 line-clamp-2 text-sm font-medium">{task.title}</p>
       </div>
-      {/* Footer: Priority, Story Points, Assignee */}
+      {/* Footer: Priority, Story Points, GitHub Badge, Assignee */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Badge
@@ -172,6 +173,7 @@ function SortableTaskCard({ task, onClick, onDelete }: Omit<TaskCardProps, "isOv
               {task.storyPoints} SP
             </span>
           )}
+          <TaskCardGitHubBadge issueId={task.id} />
         </div>
 
         <Avatar className="h-6 w-6">
