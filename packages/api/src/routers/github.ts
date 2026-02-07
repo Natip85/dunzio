@@ -145,6 +145,7 @@ export const githubRouter = createTRPCRouter({
       const connection = await getGitHubToken(ctx.session.user.id);
 
       // Create the webhook on GitHub
+      const webhookUrl = `${env.GITHUB_APP_URL}/api/github/webhook`;
       const webhookRes = await fetch(
         `https://api.github.com/repos/${input.owner}/${input.name}/hooks`,
         {
@@ -159,7 +160,7 @@ export const githubRouter = createTRPCRouter({
             active: true,
             events: ["create", "push", "pull_request"],
             config: {
-              url: `${env.GITHUB_APP_URL}/api/github/webhook`,
+              url: webhookUrl,
               content_type: "json",
               secret: env.GITHUB_WEBHOOK_SECRET,
             },
@@ -167,7 +168,43 @@ export const githubRouter = createTRPCRouter({
         }
       );
 
-      if (!webhookRes.ok) {
+      let webhook: GitHubWebhook;
+
+      if (webhookRes.ok) {
+        webhook = (await webhookRes.json()) as GitHubWebhook;
+      } else if (webhookRes.status === 422) {
+        // Webhook likely already exists — find it and reuse
+        const listRes = await fetch(
+          `https://api.github.com/repos/${input.owner}/${input.name}/hooks`,
+          {
+            headers: {
+              Authorization: `Bearer ${connection.accessToken}`,
+              Accept: "application/json",
+            },
+          }
+        );
+
+        if (!listRes.ok) {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Failed to list existing webhooks on GitHub repository.",
+          });
+        }
+
+        type GitHubWebhookFull = GitHubWebhook & { config: { url?: string } };
+        const hooks = (await listRes.json()) as GitHubWebhookFull[];
+        const existing = hooks.find((h) => h.config.url === webhookUrl);
+
+        if (!existing) {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message:
+              "A webhook already exists but with a different URL. Remove it manually or use a different repo.",
+          });
+        }
+
+        webhook = existing;
+      } else {
         const errorText = await webhookRes.text();
         // eslint-disable-next-line no-console
         console.error("[GitHub API] Failed to create webhook:", errorText);
@@ -177,8 +214,6 @@ export const githubRouter = createTRPCRouter({
             "Failed to create webhook on GitHub repository. Make sure you have admin access to the repo.",
         });
       }
-
-      const webhook = (await webhookRes.json()) as GitHubWebhook;
 
       // Save connected repo to DB
       const [repo] = await ctx.db
