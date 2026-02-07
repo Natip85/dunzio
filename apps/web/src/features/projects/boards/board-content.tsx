@@ -20,6 +20,7 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "@/components/ui/empty";
+import { BoardTableBulkActions } from "@/features/table/board-table-bulk-actions";
 import { useBoardTableParams } from "@/features/table/board-table-params";
 import { DataTable } from "@/features/table/data-table";
 import { useTRPC } from "@/trpc";
@@ -108,6 +109,13 @@ export function BoardContent({ boardId }: BoardContentProps) {
               onClick={(row) => {
                 void openIssue(row.id);
               }}
+              renderBulkActions={({ selectedRows, table }) => (
+                <BoardTableBulkActions
+                  selectedRows={selectedRows}
+                  table={table}
+                  users={users}
+                />
+              )}
             />
           </ListRendererListItem>
         </ListRendererList>

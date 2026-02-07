@@ -452,4 +452,36 @@ export const taskRouter = createTRPCRouter({
 
       return { success: true };
     }),
+
+  /**
+   * Delete multiple tasks/issues by their IDs in a single query.
+   * Used for bulk delete from the table view.
+   */
+  deleteMany: protectedProcedure
+    .input(z.object({ ids: z.array(z.string()).min(1) }))
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db.delete(issue).where(inArray(issue.id, input.ids));
+
+      return { success: true };
+    }),
+
+  /**
+   * Assign multiple tasks/issues to a user (or unassign) in a single query.
+   * Used for bulk assign from the table view.
+   */
+  bulkAssign: protectedProcedure
+    .input(
+      z.object({
+        ids: z.array(z.string()).min(1),
+        assigneeId: z.string().nullable(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db
+        .update(issue)
+        .set({ assigneeId: input.assigneeId, updatedAt: new Date() })
+        .where(inArray(issue.id, input.ids));
+
+      return { success: true };
+    }),
 });

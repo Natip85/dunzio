@@ -132,7 +132,7 @@ export const DataTable = <TData, TValue>({
                       <TableHead
                         key={header.id}
                         style={columnSize}
-                        className='after:content-[" "] bg-secondary after:bg-secondary dark:after:bg-secondary sticky right-0 z-30 px-3 text-center after:absolute after:top-0 after:bottom-0 after:left-0 after:w-px'
+                        className='after:content-[" "] bg-secondary after:bg-secondary dark:after:bg-secondary sticky right-0 z-30 flex items-center justify-center px-3 after:absolute after:top-0 after:bottom-0 after:left-0 after:w-px'
                       >
                         {renderBulkActions?.({ selectedRows, table })}
                       </TableHead>
@@ -191,7 +191,9 @@ export const DataTable = <TData, TValue>({
                           'after:content-[" "] bg-secondary after:bg-secondary dark:after:bg-secondary sticky left-0 z-20 px-3 text-center will-change-transform after:absolute after:top-0 after:right-0 after:bottom-0 after:w-px',
                         isActionsCell &&
                           'after:content-[" "] bg-secondary after:bg-secondary dark:after:bg-secondary sticky right-0 z-20 px-3 text-center will-change-transform after:absolute after:top-0 after:bottom-0 after:left-0 after:w-px',
-                        isActionsCell && hasSelection && "pointer-events-none"
+                        isActionsCell &&
+                          hasSelection &&
+                          "pointer-events-none bg-transparent opacity-30"
                       )}
                       onClick={() => {
                         if (isActionsCell || isSelectCell) return;

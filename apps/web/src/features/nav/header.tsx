@@ -7,7 +7,7 @@ import { CheckCircleIcon, Shield } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import { NavUserAvatar } from "./nav-user-avatar";
 
-const navigation = [{ name: "Home", href: "/" }];
+const navigation = [{ name: "", href: "#" }];
 
 export function Header() {
   const { data: session } = authClient.useSession();
