@@ -84,6 +84,7 @@ export const auth = betterAuth({
           email,
         });
       },
+
       // teams: {
       //   enabled: true,
       //   maximumTeams: 10, // Optional: limit teams per organization

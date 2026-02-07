@@ -46,8 +46,8 @@ export function OrgSwitcher() {
       await refetch();
       toast.success("Switched workspace");
       // Navigate to projects page for the new org
-      router.push("/projects");
       router.refresh();
+      router.push("/projects");
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Failed to switch workspace");
     }

@@ -1,12 +1,10 @@
-import Link from "next/link";
 import { eq } from "drizzle-orm";
-import { FolderKanban, Plus } from "lucide-react";
+import { FolderKanban } from "lucide-react";
 
 import { db } from "@dunzio/db";
 import { project } from "@dunzio/db/schema/projects";
 
 import { PageTitle } from "@/components/page-title";
-import { Button } from "@/components/ui/button";
 import { CreateProjectButton } from "@/features/projects/create-project-button";
 import { ProjectsList } from "@/features/projects/projects-list";
 import { requireActiveOrganizationId } from "@/lib/auth-server";
@@ -44,12 +42,7 @@ function EmptyState() {
           Create your first project to start tracking work.
         </p>
       </div>
-      <Button asChild>
-        <Link href="/projects/new">
-          <Plus className="mr-2 size-4" />
-          Create Project
-        </Link>
-      </Button>
+      <CreateProjectButton />
     </div>
   );
 }

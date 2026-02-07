@@ -5,7 +5,7 @@ import { z } from "zod/v4";
 import { columns as columnDefs } from "./board-columns";
 import { useGenericTableParams } from "./use-table-params";
 
-const availableColumns = ["id", "title", "key", "priority", "assignee", "type"] as const;
+const availableColumns = ["id", "title", "key", "priority", "assignee", "type", "github"] as const;
 type ColumnName = (typeof availableColumns)[number];
 
 const columnLabelsMap: Record<ColumnName, string> = {
@@ -15,6 +15,7 @@ const columnLabelsMap: Record<ColumnName, string> = {
   priority: "Priority",
   assignee: "Assignee",
   type: "Type",
+  github: "GitHub",
 };
 
 const availableColumnsEnum = z.enum(availableColumns);
@@ -32,6 +33,7 @@ const defaultColumns: ColumnsList = [
   { priority: true },
   { assignee: true },
   { type: true },
+  { github: true },
 ];
 
 export const tableParamsParser = {

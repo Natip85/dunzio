@@ -8,6 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { priorityColors, typeIcons } from "@/features/projects/kanban/task-card";
+import { TaskCardGitHubBadge } from "../github/task-card-github-badge";
 import { BoardTableListActions } from "./board-table-list-actions";
 
 // import { AssetsRowActions } from "./assets-row-actions";
@@ -103,6 +104,12 @@ export const columns: ColumnDef<BoardIssue>[] = [
         <span className="text-xs">{typeIcons[row.original.type]}</span> {row.original.type}
       </div>
     ),
+  },
+  {
+    id: "github",
+    accessorKey: "github",
+    header: () => <div>GitHub</div>,
+    cell: ({ row }) => <TaskCardGitHubBadge issueId={row.original.id} />,
   },
   {
     id: "actions",
