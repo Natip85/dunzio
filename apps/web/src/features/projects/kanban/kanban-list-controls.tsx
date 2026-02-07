@@ -265,31 +265,6 @@ export const KanbanListControls = <T, TColumnsList extends Record<string, boolea
             className="bg-background flex w-fit max-w-[75vw] flex-wrap items-center gap-2"
           >
             {!viewInMenu && (
-              <Popover>
-                <PopoverTrigger
-                  asChild
-                  className="flex transition-all duration-300 ease-in-out"
-                >
-                  <Button
-                    size="sm"
-                    disabled={viewMode !== "list"}
-                  >
-                    <Table /> View
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent>
-                  {viewMode === "list" && (
-                    <ColumnsMenu
-                      columns={columnOptions}
-                      onColumnToggle={toggleColumnVisibility}
-                      onColumnReorder={updateColumnOrder}
-                      onReset={resetTableParams}
-                    />
-                  )}
-                </PopoverContent>
-              </Popover>
-            )}
-            {!viewInMenu && (
               <ToggleGroup
                 className="transition-all duration-300 ease-in-out"
                 value={viewMode}
@@ -324,7 +299,31 @@ export const KanbanListControls = <T, TColumnsList extends Record<string, boolea
                 onChange={(e) => onInputChange(e.target.value)}
               />
             )}
-
+            {!viewInMenu && (
+              <Popover>
+                <PopoverTrigger
+                  asChild
+                  className="flex transition-all duration-300 ease-in-out"
+                >
+                  <Button
+                    variant="outline"
+                    disabled={viewMode !== "list"}
+                  >
+                    <Table /> View
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent>
+                  {viewMode === "list" && (
+                    <ColumnsMenu
+                      columns={columnOptions}
+                      onColumnToggle={toggleColumnVisibility}
+                      onColumnReorder={updateColumnOrder}
+                      onReset={resetTableParams}
+                    />
+                  )}
+                </PopoverContent>
+              </Popover>
+            )}
             {!filterInMenu &&
               (filterButton ?? (
                 <FilterButton

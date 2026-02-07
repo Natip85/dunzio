@@ -345,6 +345,7 @@ export const issueRelations = relations(issue, ({ one, many }) => ({
   issueLabels: many(issueLabel),
   activities: many(activity),
   watchers: many(issueWatcher),
+  taskLinks: many(taskLink),
 }));
 
 // ============================================================================
@@ -538,5 +539,122 @@ export const activityRelations = relations(activity, ({ one }) => ({
   actor: one(user, {
     fields: [activity.actorId],
     references: [user.id],
+  }),
+}));
+
+// ============================================================================
+// GITHUB INTEGRATION
+// ============================================================================
+
+export const taskLinkTypeEnum = pgEnum("task_link_type", ["branch", "pr", "commit"]);
+
+/**
+ * Per-user GitHub connection with repo-level scopes.
+ * Separate from the Better Auth `account` table (which stores sign-in tokens).
+ */
+export const githubConnection = pgTable(
+  "github_connection",
+  {
+    id: text("id")
+      .primaryKey()
+      .$defaultFn(() => crypto.randomUUID()),
+    userId: text("user_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    githubUserId: text("github_user_id").notNull(),
+    githubUsername: text("github_username").notNull(),
+    accessToken: text("access_token").notNull(),
+    scope: text("scope"),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at")
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => ({
+    userIdUniqueIdx: uniqueIndex("github_connection_user_id_unique_idx").on(table.userId),
+  })
+);
+
+export const githubConnectionRelations = relations(githubConnection, ({ one }) => ({
+  user: one(user, {
+    fields: [githubConnection.userId],
+    references: [user.id],
+  }),
+}));
+
+/**
+ * GitHub repos connected to an organization.
+ * When a repo is connected, a webhook is created to receive events.
+ */
+export const connectedRepo = pgTable(
+  "connected_repo",
+  {
+    id: text("id")
+      .primaryKey()
+      .$defaultFn(() => crypto.randomUUID()),
+    organizationId: text("organization_id").notNull(),
+    githubRepoId: integer("github_repo_id").notNull(),
+    owner: text("owner").notNull(),
+    name: text("name").notNull(),
+    fullName: text("full_name").notNull(),
+    isPrivate: boolean("is_private").default(false).notNull(),
+    webhookId: integer("webhook_id"), // GitHub's webhook ID for cleanup
+    connectedById: text("connected_by_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+  },
+  (table) => ({
+    orgIdIdx: index("connected_repo_org_id_idx").on(table.organizationId),
+    orgRepoUniqueIdx: uniqueIndex("connected_repo_org_repo_unique_idx").on(
+      table.organizationId,
+      table.githubRepoId
+    ),
+  })
+);
+
+export const connectedRepoRelations = relations(connectedRepo, ({ one }) => ({
+  connectedBy: one(user, {
+    fields: [connectedRepo.connectedById],
+    references: [user.id],
+  }),
+}));
+
+/**
+ * Links between issues and GitHub entities (branches, PRs, commits).
+ * Created automatically by the webhook handler when task keys are detected.
+ */
+export const taskLink = pgTable(
+  "task_link",
+  {
+    id: text("id")
+      .primaryKey()
+      .$defaultFn(() => crypto.randomUUID()),
+    issueId: text("issue_id")
+      .notNull()
+      .references(() => issue.id, { onDelete: "cascade" }),
+    type: taskLinkTypeEnum("type").notNull(),
+    title: text("title"),
+    url: text("url").notNull(),
+    ref: text("ref").notNull(), // branch name, commit SHA, or PR number
+    state: text("state"), // For PRs: "open" | "closed" | "merged"
+    githubId: text("github_id").notNull(), // For deduplication
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+  },
+  (table) => ({
+    issueIdIdx: index("task_link_issue_id_idx").on(table.issueId),
+    uniqueLinkIdx: uniqueIndex("task_link_unique_idx").on(
+      table.issueId,
+      table.type,
+      table.githubId
+    ),
+  })
+);
+
+export const taskLinkRelations = relations(taskLink, ({ one }) => ({
+  issue: one(issue, {
+    fields: [taskLink.issueId],
+    references: [issue.id],
   }),
 }));

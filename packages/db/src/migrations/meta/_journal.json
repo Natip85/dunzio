@@ -8,6 +8,13 @@
       "when": 1770114095997,
       "tag": "0000_burly_the_liberteens",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1770455659589,
+      "tag": "0001_wooden_stryfe",
+      "breakpoints": true
     }
   ]
 }
