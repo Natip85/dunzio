@@ -1,3 +1,4 @@
+import { githubRouter } from "./routers/github";
 import { onboardingRouter } from "./routers/onboarding";
 import { organizationRouter } from "./routers/organization";
 import { projectRouter } from "./routers/project";
@@ -11,6 +12,7 @@ export const appRouter = createTRPCRouter({
   onboarding: onboardingRouter,
   organization: organizationRouter,
   task: taskRouter,
+  github: githubRouter,
 });
 
 // export type definition of API

@@ -17,7 +17,6 @@ export function SocialAuthButtons() {
 
     return (
       <Button
-        variant={isLastUsed ? "default" : "outline"}
         key={provider}
         onClick={() => {
           void authClient.signIn.social({

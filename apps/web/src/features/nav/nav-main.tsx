@@ -4,7 +4,7 @@ import type { Route } from "next";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
-import { ChevronRight, FolderKanban, Kanban } from "lucide-react";
+import { ChevronRight, FolderKanban, GithubIcon, Kanban, ShieldBan } from "lucide-react";
 
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import {
@@ -19,6 +19,7 @@ import {
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
 import { NavMainSkeleton } from "@/features/loaders";
+import { authClient } from "@/lib/auth-client";
 import { useTRPC } from "@/trpc";
 
 export function NavMain() {
@@ -28,6 +29,9 @@ export function NavMain() {
   const { data: projects, isLoading } = useQuery(
     trpc.project.listProjectsWithBoards.queryOptions()
   );
+
+  const { data: session } = authClient.useSession();
+  const isAdmin = session?.user?.role === "admin";
 
   return (
     <SidebarGroup>
@@ -117,6 +121,36 @@ export function NavMain() {
             );
           })
         }
+        <SidebarGroupLabel>Settings</SidebarGroupLabel>
+        <SidebarMenuItem key="integrations">
+          <SidebarMenuButton
+            asChild
+            isActive={pathname === "/settings/integrations"}
+            tooltip="Integrations"
+          >
+            <Link href={"/settings/integrations" as Route}>
+              <GithubIcon className="size-4" />
+              <span>Integrations</span>
+            </Link>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+        {isAdmin && (
+          <>
+            <SidebarGroupLabel>Admin</SidebarGroupLabel>
+            <SidebarMenuItem key="admin">
+              <SidebarMenuButton
+                asChild
+                isActive={pathname === "/admin"}
+                tooltip="Admin"
+              >
+                <Link href="#">
+                  <ShieldBan className="size-4" />
+                  <span>Admin</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </>
+        )}
       </SidebarMenu>
     </SidebarGroup>
   );

@@ -215,7 +215,7 @@ export const githubRouter = createTRPCRouter({
         });
       }
 
-      // save connected repo to DB
+      // Save connected repo to DB
       const [repo] = await ctx.db
         .insert(connectedRepo)
         .values({
