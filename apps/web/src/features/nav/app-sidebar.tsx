@@ -21,7 +21,7 @@ function CustomSidebarTrigger() {
   return (
     <SidebarTrigger
       className={cn(
-        "bg-background text-foreground hover:bg-sidebar hover:text-sidebar-foreground absolute top-14 -right-4 z-50 rounded-full border-0 transition-all duration-300 ease-in-out",
+        "bg-background text-foreground hover:bg-sidebar hover:text-sidebar-foreground absolute top-16 -right-4 z-50 rounded-full border-0 transition-all duration-300 ease-in-out",
         "[&_svg]:transition-all [&_svg]:duration-300 [&_svg]:ease-in-out active:[&_svg]:scale-125",
         state === "collapsed" ? "cursor-e-resize" : "cursor-w-resize"
       )}

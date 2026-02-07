@@ -36,7 +36,7 @@ export function ProfileUpdateForm({ user }: ProfileUpdateFormProps) {
         promises.push(
           authClient.changeEmail({
             newEmail: value.email,
-            callbackURL: "/settings/profile",
+            callbackURL: "/profile",
           })
         );
       }

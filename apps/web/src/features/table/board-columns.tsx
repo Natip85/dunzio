@@ -1,6 +1,7 @@
 "use client";
 
 import type { ColumnDef } from "@tanstack/react-table";
+import { UserIcon } from "lucide-react";
 
 import type { RouterOutputs } from "@dunzio/api";
 
@@ -91,7 +92,10 @@ export const columns: ColumnDef<BoardIssue>[] = [
               {row.original.assignee.name?.charAt(0) ?? ""}
             </AvatarFallback>
           </>
-        : <AvatarFallback className="bg-muted text-muted-foreground text-xs"> </AvatarFallback>}
+        : <AvatarFallback className="bg-muted text-muted-foreground text-xs">
+            <UserIcon className="size-4" />
+          </AvatarFallback>
+        }
       </Avatar>
     ),
   },

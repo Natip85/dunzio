@@ -1,5 +1,7 @@
 "use client";
 
+import { UserIcon } from "lucide-react";
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   MultiSelect,
@@ -66,7 +68,9 @@ export function UserSelect({
           >
             <div className="flex items-center gap-2">
               <Avatar className="h-6 w-6">
-                <AvatarFallback className="bg-muted text-xs"></AvatarFallback>
+                <AvatarFallback className="bg-muted text-xs">
+                  <UserIcon className="size-4" />
+                </AvatarFallback>
               </Avatar>
               <span>Unassigned</span>
             </div>

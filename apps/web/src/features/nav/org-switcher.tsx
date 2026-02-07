@@ -137,7 +137,7 @@ export function OrgSwitcher() {
             onClick={() => handleSwitchOrg(org.id)}
             className="flex cursor-pointer items-center gap-2"
           >
-            <div className="bg-primary/10 text-primary flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-xs font-semibold">
+            <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-xs font-semibold">
               {org.logo ?
                 <img
                   src={org.logo}
@@ -158,9 +158,7 @@ export function OrgSwitcher() {
           onClick={() => setCreateOrgOpen(true)}
           className="flex cursor-pointer items-center gap-2"
         >
-          <div className="bg-muted flex h-6 w-6 items-center justify-center rounded-md">
-            <Plus className="h-3 w-3" />
-          </div>
+          <Plus className="h-3 w-3" />
           <span>Create workspace</span>
         </DropdownMenuItem>
       </DropdownMenuContent>

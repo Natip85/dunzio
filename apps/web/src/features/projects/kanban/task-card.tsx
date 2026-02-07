@@ -5,7 +5,7 @@ import type { CSSProperties, MouseEvent } from "react";
 import { useRef } from "react";
 import { defaultAnimateLayoutChanges, useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { MoreVertical } from "lucide-react";
+import { MoreVertical, UserIcon } from "lucide-react";
 
 import type { IssuePriority, IssueType } from "./schemas";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -184,7 +184,11 @@ function SortableTaskCard({ task, onClick, onDelete }: Omit<TaskCardProps, "isOv
                 {task.assignee.name?.charAt(0) ?? ""}
               </AvatarFallback>
             </>
-          : <AvatarFallback className="bg-muted text-muted-foreground text-xs"> </AvatarFallback>}
+          : <AvatarFallback className="bg-muted text-muted-foreground text-xs">
+              {" "}
+              <UserIcon className="size-4" />
+            </AvatarFallback>
+          }
         </Avatar>
       </div>
     </div>

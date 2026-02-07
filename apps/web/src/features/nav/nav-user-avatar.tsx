@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Loader2, LogOut } from "lucide-react";
+import { Loader2, LogOut, User } from "lucide-react";
 
 import { ModeToggle } from "@/components/mode-toggle";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -83,7 +84,17 @@ export function NavUserAvatar() {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-
+        <DropdownMenuGroup>
+          <DropdownMenuItem asChild>
+            <Link
+              href="/profile"
+              className="flex items-center gap-2"
+            >
+              <User />
+              Profile
+            </Link>
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
         <DropdownMenuItem
           onClick={() =>
             void authClient.signOut({

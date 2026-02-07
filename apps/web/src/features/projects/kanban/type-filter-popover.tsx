@@ -70,7 +70,7 @@ export function TypeFilterPopover({
                   key={type.value}
                   className={cn(
                     "flex cursor-pointer items-center gap-2 rounded-md px-2 py-1.5 transition-colors",
-                    "hover:bg-accent",
+                    "hover:bg-accent/30",
                     isSelected && "bg-accent/50"
                   )}
                 >

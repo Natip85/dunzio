@@ -2,17 +2,13 @@
 
 import type { Route } from "next";
 import Link from "next/link";
-import { CheckCircleIcon, Shield } from "lucide-react";
+import { CheckCircleIcon } from "lucide-react";
 
-import { authClient } from "@/lib/auth-client";
 import { NavUserAvatar } from "./nav-user-avatar";
 
 const navigation = [{ name: "", href: "#" }];
 
 export function Header() {
-  const { data: session } = authClient.useSession();
-  const isAdmin = session?.user?.role === "admin";
-
   return (
     <header className="border-border bg-background/95 supports-backdrop-filter:bg-background/60 sticky top-0 right-0 left-0 z-50 w-full border-b backdrop-blur">
       <div className="flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
@@ -38,15 +34,6 @@ export function Header() {
               {item.name}
             </Link>
           ))}
-          {isAdmin && (
-            <Link
-              href={"/admin" as Route}
-              className="text-foreground hover:text-muted-foreground flex items-center gap-1.5 text-sm font-medium transition-colors"
-            >
-              <Shield className="h-4 w-4" />
-              Admin
-            </Link>
-          )}
         </nav>
 
         {/* Right actions */}

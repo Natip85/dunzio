@@ -73,7 +73,7 @@ function AccountCard({ provider, account }: { provider: string; account?: Accoun
     try {
       const res = await authClient.linkSocial({
         provider,
-        callbackURL: "/settings/profile",
+        callbackURL: "/profile",
       });
 
       if (res.error) {

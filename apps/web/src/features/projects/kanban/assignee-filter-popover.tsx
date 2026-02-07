@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronDownIcon } from "lucide-react";
+import { ChevronDownIcon, UserIcon } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -68,7 +68,7 @@ export function AssigneeFilterPopover({
               <Label
                 className={cn(
                   "flex cursor-pointer items-center gap-2 rounded-md px-2 py-2 transition-colors",
-                  "hover:bg-accent",
+                  "hover:bg-accent/30",
                   selectedAssignees.includes("__unassigned__") && "bg-accent/50"
                 )}
               >
@@ -77,7 +77,9 @@ export function AssigneeFilterPopover({
                   onCheckedChange={() => onToggleAssignee("__unassigned__")}
                 />
                 <Avatar className="h-6 w-6">
-                  <AvatarFallback className="bg-muted text-xs"></AvatarFallback>
+                  <AvatarFallback className="bg-muted text-xs">
+                    <UserIcon className="size-4" />
+                  </AvatarFallback>
                 </Avatar>
                 <span className="text-sm">Unassigned</span>
               </Label>
@@ -90,7 +92,7 @@ export function AssigneeFilterPopover({
                     key={user.id}
                     className={cn(
                       "flex cursor-pointer items-center gap-2 rounded-md px-2 py-2 transition-colors",
-                      "hover:bg-accent",
+                      "hover:bg-accent/30",
                       isSelected && "bg-accent/50"
                     )}
                   >

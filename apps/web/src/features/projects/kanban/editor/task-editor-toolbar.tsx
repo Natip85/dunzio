@@ -153,7 +153,7 @@ export function TaskEditorToolbar({ editor, editorState }: TaskEditorToolbarProp
           </Button>
         </PopoverTrigger>
         <PopoverContent
-          className="w-72 p-0"
+          className="w-78 p-0"
           align="start"
           sideOffset={8}
           onFocusOutside={(e) => e.preventDefault()}
