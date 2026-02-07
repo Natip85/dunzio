@@ -48,7 +48,7 @@ export function GitHubConnectButton() {
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => disconnectMutation.mutate({})}
+          onClick={() => disconnectMutation.mutate()}
           disabled={disconnectMutation.isPending}
         >
           {disconnectMutation.isPending ?
