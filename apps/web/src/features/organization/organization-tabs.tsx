@@ -2,9 +2,8 @@
 
 import { useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { Building2 } from "lucide-react";
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { InvitesTab } from "./invites-tab";
 import { MembersTab } from "./members-tab";
@@ -54,45 +53,33 @@ export function OrganizationTabs({ organization, organizationId }: OrganizationT
   const pendingInvitations = organization.invitations?.filter((i) => i.status === "pending") ?? [];
 
   return (
-    <div className="space-y-4">
+    <Tabs
+      defaultValue="members"
+      className="w-full"
+    >
+      <TabsList className="grid w-full grid-cols-2">
+        <TabsTrigger value="members">Members ({organization.members?.length ?? 0})</TabsTrigger>
+        <TabsTrigger value="invitations">Invitations ({pendingInvitations.length})</TabsTrigger>
+      </TabsList>
       <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Building2 className="size-5" />
-            {organization.name}
-          </CardTitle>
-          <CardDescription>/{organization.slug}</CardDescription>
-        </CardHeader>
+        <CardContent>
+          <TabsContent value="members">
+            <MembersTab
+              members={organization.members ?? []}
+              organizationId={organizationId}
+              onUpdate={handleUpdate}
+            />
+          </TabsContent>
+
+          <TabsContent value="invitations">
+            <InvitesTab
+              invitations={organization.invitations ?? []}
+              organizationId={organizationId}
+              onUpdate={handleUpdate}
+            />
+          </TabsContent>
+        </CardContent>
       </Card>
-
-      <Tabs
-        defaultValue="members"
-        className="w-full"
-      >
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="members">Members ({organization.members?.length ?? 0})</TabsTrigger>
-          <TabsTrigger value="invitations">Invitations ({pendingInvitations.length})</TabsTrigger>
-        </TabsList>
-        <Card>
-          <CardContent>
-            <TabsContent value="members">
-              <MembersTab
-                members={organization.members ?? []}
-                organizationId={organizationId}
-                onUpdate={handleUpdate}
-              />
-            </TabsContent>
-
-            <TabsContent value="invitations">
-              <InvitesTab
-                invitations={organization.invitations ?? []}
-                organizationId={organizationId}
-                onUpdate={handleUpdate}
-              />
-            </TabsContent>
-          </CardContent>
-        </Card>
-      </Tabs>
-    </div>
+    </Tabs>
   );
 }
