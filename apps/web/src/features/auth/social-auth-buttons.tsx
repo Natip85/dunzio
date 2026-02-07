@@ -8,7 +8,11 @@ import {
   SUPPORTED_OAUTH_PROVIDERS,
 } from "@/lib/o-auth-providers";
 
-export function SocialAuthButtons() {
+type SocialAuthButtonsProps = {
+  redirectUrl?: string;
+};
+
+export function SocialAuthButtons({ redirectUrl }: SocialAuthButtonsProps) {
   const lastMethod = authClient.getLastUsedLoginMethod();
 
   return SUPPORTED_OAUTH_PROVIDERS.map((provider) => {
@@ -21,7 +25,7 @@ export function SocialAuthButtons() {
         onClick={() => {
           void authClient.signIn.social({
             provider,
-            callbackURL: "/onboarding",
+            callbackURL: redirectUrl ?? "/onboarding",
           });
         }}
         className="relative w-full"

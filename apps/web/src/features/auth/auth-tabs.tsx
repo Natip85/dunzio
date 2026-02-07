@@ -13,7 +13,11 @@ import { SocialAuthButtons } from "./social-auth-buttons";
 
 type Tab = "signin" | "signup" | "email-verification" | "forgot-password";
 
-export function AuthTabs() {
+type AuthTabsProps = {
+  redirectUrl?: string;
+};
+
+export function AuthTabs({ redirectUrl }: AuthTabsProps) {
   const [email, setEmail] = useState("");
   const [selectedTab, setSelectedTab] = useState<Tab>("signin");
 
@@ -40,7 +44,7 @@ export function AuthTabs() {
       {isAuthTab && (
         <Card>
           <CardContent className="space-y-4 pt-6">
-            <SocialAuthButtons />
+            <SocialAuthButtons redirectUrl={redirectUrl} />
 
             <div className="relative my-4">
               <div className="absolute inset-0 flex items-center">
@@ -55,10 +59,14 @@ export function AuthTabs() {
               <SignInTab
                 openEmailVerificationTab={openEmailVerificationTab}
                 openForgotPassword={() => setSelectedTab("forgot-password")}
+                redirectUrl={redirectUrl}
               />
             )}
             {selectedTab === "signup" && (
-              <SignUpTab openEmailVerificationTab={openEmailVerificationTab} />
+              <SignUpTab
+                openEmailVerificationTab={openEmailVerificationTab}
+                redirectUrl={redirectUrl}
+              />
             )}
           </CardContent>
         </Card>

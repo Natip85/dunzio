@@ -4,7 +4,7 @@ import { Building2 } from "lucide-react";
 
 import { auth } from "@dunzio/auth";
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { PageTitle } from "@/components/page-title";
 import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { CreateOrganizationButton } from "@/features/organization/create-organization-button";
 import { OrganizationRow } from "@/features/organization/organization-row";
@@ -29,59 +29,47 @@ export default async function OrganizationsPage() {
   const memberCountMap = new Map(memberCountsArray.map((m) => [m.orgId, m.count]));
 
   return (
-    <div className="my-6 space-y-4 px-4">
-      <div className="flex justify-end"></div>
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center justify-between gap-2">
-            <span className="flex items-center gap-2">
-              <Building2 className="h-5 w-5" />
-              Organizations ({organizations?.length ?? 0})
-            </span>
+    <>
+      <div className="flex flex-1 flex-col gap-6 py-6 pr-4.5 pl-6">
+        <PageTitle title="Organizations">
+          <CreateOrganizationButton />
+        </PageTitle>
+        {organizations && organizations.length > 0 ?
+          <div className="rounded-md border">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Organization</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Members</TableHead>
+                  <TableHead>Created</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {organizations.map((org) => (
+                  <OrganizationRow
+                    key={org.id}
+                    organization={org}
+                    activeOrgId={session.session.activeOrganizationId}
+                    memberCount={memberCountMap.get(org.id)}
+                  />
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        : <div className="flex flex-col items-center justify-center py-12 text-center">
+            <div className="bg-muted mb-4 flex size-12 items-center justify-center rounded-full">
+              <Building2 className="text-muted-foreground size-6" />
+            </div>
+            <h3 className="mb-1 text-lg font-medium">No organizations yet</h3>
+            <p className="text-muted-foreground mb-4 max-w-sm text-sm">
+              Create your first organization to start collaborating with your team.
+            </p>
             <CreateOrganizationButton />
-          </CardTitle>
-          <CardDescription>
-            Manage your organizations, team members, and collaboration settings
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          {organizations && organizations.length > 0 ?
-            <div className="rounded-md border">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Organization</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Members</TableHead>
-                    <TableHead>Created</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {organizations.map((org) => (
-                    <OrganizationRow
-                      key={org.id}
-                      organization={org}
-                      activeOrgId={session.session.activeOrganizationId}
-                      memberCount={memberCountMap.get(org.id)}
-                    />
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-          : <div className="flex flex-col items-center justify-center py-12 text-center">
-              <div className="bg-muted mb-4 flex size-12 items-center justify-center rounded-full">
-                <Building2 className="text-muted-foreground size-6" />
-              </div>
-              <h3 className="mb-1 text-lg font-medium">No organizations yet</h3>
-              <p className="text-muted-foreground mb-4 max-w-sm text-sm">
-                Create your first organization to start collaborating with your team.
-              </p>
-              <CreateOrganizationButton />
-            </div>
-          }
-        </CardContent>
-      </Card>
-    </div>
+          </div>
+        }
+      </div>
+    </>
   );
 }

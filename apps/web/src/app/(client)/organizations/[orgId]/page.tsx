@@ -3,6 +3,7 @@ import { notFound, redirect } from "next/navigation";
 
 import { auth } from "@dunzio/auth";
 
+import { PageTitle } from "@/components/page-title";
 import { OrganizationTabs } from "@/features/organization/organization-tabs";
 
 type OrganizationIdPageProps = {
@@ -23,7 +24,8 @@ export default async function OrganizationIdPage({ params }: OrganizationIdPageP
   if (!organization) return notFound();
 
   return (
-    <div className="my-6 space-y-4 px-4">
+    <div className="flex flex-1 flex-col gap-6 py-6 pr-4.5 pl-6">
+      <PageTitle title={organization.name} />
       <OrganizationTabs
         organization={organization}
         organizationId={orgId}

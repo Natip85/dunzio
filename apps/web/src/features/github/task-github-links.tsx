@@ -3,8 +3,13 @@
 import { useQuery } from "@tanstack/react-query";
 import { ExternalLink, GitBranch, GitCommit, GitPullRequest, Loader2 } from "lucide-react";
 
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { useTRPC } from "@/trpc";
 
@@ -40,69 +45,75 @@ export function TaskGitHubLinks({ issueId }: TaskGitHubLinksProps) {
   const commits = links.filter((l) => l.type === "commit");
 
   return (
-    <div className="flex flex-col gap-3">
-      <Separator />
-      <h4 className="text-muted-foreground text-xs font-medium tracking-wider uppercase">GitHub</h4>
-
-      {/* Branches */}
-      {branches.length > 0 && (
-        <LinkSection
-          icon={<GitBranch className="size-3.5" />}
-          title="Branches"
-        >
-          {branches.map((link) => (
-            <LinkItem
-              key={link.id}
-              href={link.url}
-              label={link.ref}
-            />
-          ))}
-        </LinkSection>
-      )}
-
-      {/* Pull Requests */}
-      {prs.length > 0 && (
-        <LinkSection
-          icon={<GitPullRequest className="size-3.5" />}
-          title="Pull Requests"
-        >
-          {prs.map((link) => (
-            <LinkItem
-              key={link.id}
-              href={link.url}
-              label={link.title ?? `#${link.ref}`}
-              badge={
-                link.state ?
-                  <Badge
-                    variant="secondary"
-                    className={cn("text-[10px]", PR_STATE_STYLES[link.state])}
-                  >
-                    {link.state}
-                  </Badge>
-                : null
-              }
-            />
-          ))}
-        </LinkSection>
-      )}
-
-      {/* Commits */}
-      {commits.length > 0 && (
-        <LinkSection
-          icon={<GitCommit className="size-3.5" />}
-          title="Commits"
-        >
-          {commits.map((link) => (
-            <LinkItem
-              key={link.id}
-              href={link.url}
-              label={link.title ?? link.ref.slice(0, 7)}
-              sublabel={link.ref.slice(0, 7)}
-            />
-          ))}
-        </LinkSection>
-      )}
-    </div>
+    <Accordion
+      type="single"
+      collapsible
+    >
+      <AccordionItem value="github">
+        <AccordionTrigger className="justify-start">GitHub</AccordionTrigger>
+        <AccordionContent>
+          <h4 className="text-muted-foreground text-xs font-medium tracking-wider uppercase">
+            GitHub
+          </h4>
+          {/* Branches */}
+          {branches.length > 0 && (
+            <LinkSection
+              icon={<GitBranch className="size-3.5" />}
+              title="Branches"
+            >
+              {branches.map((link) => (
+                <LinkItem
+                  key={link.id}
+                  href={link.url}
+                  label={link.ref}
+                />
+              ))}
+            </LinkSection>
+          )}
+          {/* Pull Requests */}
+          {prs.length > 0 && (
+            <LinkSection
+              icon={<GitPullRequest className="size-3.5" />}
+              title="Pull Requests"
+            >
+              {prs.map((link) => (
+                <LinkItem
+                  key={link.id}
+                  href={link.url}
+                  label={link.title ?? `#${link.ref}`}
+                  badge={
+                    link.state ?
+                      <Badge
+                        variant="secondary"
+                        className={cn("text-[10px]", PR_STATE_STYLES[link.state])}
+                      >
+                        {link.state}
+                      </Badge>
+                    : null
+                  }
+                />
+              ))}
+            </LinkSection>
+          )}
+          {/* Commits */}
+          {commits.length > 0 && (
+            <LinkSection
+              icon={<GitCommit className="size-3.5" />}
+              title="Commits"
+            >
+              {commits.map((link) => (
+                <LinkItem
+                  key={link.id}
+                  href={link.url}
+                  label={link.title ?? link.ref.slice(0, 7)}
+                  sublabel={link.ref.slice(0, 7)}
+                />
+              ))}
+            </LinkSection>
+          )}{" "}
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
   );
 }
 

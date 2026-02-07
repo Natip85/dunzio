@@ -3,7 +3,12 @@ import { ArrowLeft } from "lucide-react";
 
 import { AuthTabs } from "@/features/auth/auth-tabs";
 
-export default function AuthPage() {
+type AuthPageProps = {
+  searchParams: Promise<{ redirect?: string }>;
+};
+
+export default async function AuthPage({ searchParams }: AuthPageProps) {
+  const { redirect: redirectUrl } = await searchParams;
   return (
     <div className="bg-muted/30 relative min-h-screen">
       {/* Subtle background pattern */}
@@ -36,7 +41,7 @@ export default function AuthPage() {
         </div>
 
         {/* Auth Tabs Card */}
-        <AuthTabs />
+        <AuthTabs redirectUrl={redirectUrl} />
 
         {/* Footer Links */}
         <div className="mt-10 space-y-4">

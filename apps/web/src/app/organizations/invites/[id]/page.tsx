@@ -10,10 +10,12 @@ type PageProps = {
   params: Promise<{ id: string }>;
 };
 export default async function InvitationPage({ params }: PageProps) {
-  const session = await auth.api.getSession({ headers: await headers() });
-  if (session == null) return redirect("/auth/sign-in");
-
   const { id } = await params;
+
+  const session = await auth.api.getSession({ headers: await headers() });
+  if (session == null) {
+    return redirect(`/auth/sign-in?redirect=${encodeURIComponent(`/organizations/invites/${id}`)}`);
+  }
 
   const invitation = await auth.api
     .getInvitation({
