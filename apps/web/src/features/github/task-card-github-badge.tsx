@@ -16,17 +16,15 @@ type TaskCardGitHubBadgeProps = {
  */
 export function TaskCardGitHubBadge({ issueId }: TaskCardGitHubBadgeProps) {
   const trpc = useTRPC();
-  const { data: links } = useQuery({
-    ...trpc.github.getTaskLinks.queryOptions({ issueId }),
-    staleTime: 60_000, // Cache for 1 minute to avoid over-fetching on the board
-  });
+  const { data: links } = useQuery(
+    trpc.github.getTaskLinks.queryOptions({ issueId }, { staleTime: 60_000 }) // Cache for 1 minute to avoid over-fetching on the board
+  );
 
   if (!links) return null;
 
   const prs = links.filter((l) => l.type === "pr");
   if (prs.length === 0) return null;
 
-  const hasMerged = prs.some((pr) => pr.state === "merged");
   const allMerged = prs.every((pr) => pr.state === "merged");
   const hasOpen = prs.some((pr) => pr.state === "open");
 
