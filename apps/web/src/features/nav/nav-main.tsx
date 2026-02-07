@@ -19,7 +19,6 @@ import {
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
 import { NavMainSkeleton } from "@/features/loaders";
-import { authClient } from "@/lib/auth-client";
 import { useTRPC } from "@/trpc";
 
 export function NavMain() {
@@ -30,9 +29,10 @@ export function NavMain() {
     trpc.project.listProjectsWithBoards.queryOptions()
   );
 
-  const { data: session } = authClient.useSession();
-  const isAdmin = session?.user?.role === "admin";
-
+  // const { data: orgMemberRole } = useQuery(trpc.organization.list.queryOptions());
+  // const isOwner = orgMemberRole?.organizations[0]?.role === "owner";
+  const { data: activeOrg } = useQuery(trpc.organization.getActive.queryOptions());
+  const isOwner = activeOrg?.role === "owner";
   return (
     <SidebarGroup>
       <SidebarGroupLabel>
@@ -121,21 +121,35 @@ export function NavMain() {
             );
           })
         }
-        <SidebarGroupLabel>Settings</SidebarGroupLabel>
-        <SidebarMenuItem key="integrations">
-          <SidebarMenuButton
-            asChild
-            isActive={pathname === "/settings/integrations"}
-            tooltip="Integrations"
-          >
-            <Link href={"/settings/integrations" as Route}>
-              <GithubIcon className="size-4" />
-              <span>Integrations</span>
-            </Link>
-          </SidebarMenuButton>
-        </SidebarMenuItem>
-        {isAdmin && (
+        {isOwner && (
           <>
+            <SidebarGroupLabel>Settings</SidebarGroupLabel>
+            <SidebarMenuItem key="integrations">
+              <SidebarMenuButton
+                asChild
+                isActive={pathname === "/settings/integrations"}
+                tooltip="Integrations"
+              >
+                <Link href={"/settings/integrations" as Route}>
+                  <GithubIcon className="size-4" />
+                  <span>Integrations</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+
+            <SidebarGroupLabel>Organizations</SidebarGroupLabel>
+            <SidebarMenuItem key="organizations">
+              <SidebarMenuButton
+                asChild
+                isActive={pathname === "/organizations"}
+                tooltip="Organizations"
+              >
+                <Link href={"/organizations"}>
+                  <ShieldBan className="size-4" />
+                  <span>Organizations</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
             <SidebarGroupLabel>Admin</SidebarGroupLabel>
             <SidebarMenuItem key="admin">
               <SidebarMenuButton
