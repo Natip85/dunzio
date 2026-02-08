@@ -119,7 +119,7 @@ function SortableTaskCard({ task, onClick, onDelete }: Omit<TaskCardProps, "isOv
       onMouseDown={handleMouseDown}
       onClick={handleClick}
       className={cn(
-        "group bg-background hover:border-primary/50 cursor-grab rounded-md border p-3 shadow-sm transition-colors",
+        "group bg-background hover:border-primary/50 cursor-grab border p-3 shadow-sm transition-colors",
         isDragging && "pointer-events-none opacity-0"
       )}
     >
@@ -203,7 +203,7 @@ function TaskCardOverlay({ task }: Pick<TaskCardProps, "task">) {
   return (
     <div
       className={cn(
-        "bg-background cursor-grabbing rounded-md border p-3 shadow-sm",
+        "bg-background cursor-grabbing border p-3 shadow-sm",
         "ring-primary pointer-events-none shadow-lg ring-2"
       )}
     >
