@@ -52,10 +52,7 @@ export default function IntegrationsPage() {
           <Separator />
 
           {/* Add Repo */}
-          <div className="flex flex-col gap-3">
-            <h4 className="text-sm font-medium">Add Repository</h4>
-            <RepoSelector />
-          </div>
+          <RepoSelector />
         </CardContent>
       </Card>
     </div>

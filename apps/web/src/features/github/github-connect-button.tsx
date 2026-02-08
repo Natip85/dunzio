@@ -43,7 +43,7 @@ export function GitHubConnectButton() {
         <div className="flex items-center gap-2">
           <GithubIcon className="size-4" />
           <span className="text-sm font-medium">{data.githubUsername}</span>
-          <Badge variant="secondary">Connected</Badge>
+          <Badge>Connected</Badge>
         </div>
         <Button
           variant="ghost"

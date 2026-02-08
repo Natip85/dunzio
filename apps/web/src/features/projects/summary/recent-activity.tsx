@@ -78,7 +78,7 @@ export function RecentActivity({ boardId }: RecentActivityProps) {
   }, {});
 
   return (
-    <Card className="h-full rounded-xl border p-5">
+    <Card className="h-full border p-5">
       <CardHeader className="p-0 pb-4">
         <CardTitle className="text-base font-semibold">Recent activity</CardTitle>
         <CardDescription>

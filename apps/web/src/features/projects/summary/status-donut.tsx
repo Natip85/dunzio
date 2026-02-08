@@ -33,7 +33,7 @@ export function StatusDonut({ boardId }: StatusDonutProps) {
   }));
 
   return (
-    <Card className="h-full rounded-xl border p-5">
+    <Card className="h-full border p-5">
       <CardHeader className="p-0 pb-1">
         <CardTitle className="text-base font-semibold">Status overview</CardTitle>
         <CardDescription>Get a snapshot of the status of your work items.</CardDescription>

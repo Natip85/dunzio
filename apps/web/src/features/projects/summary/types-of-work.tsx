@@ -51,7 +51,7 @@ export function TypesOfWork({ boardId }: TypesOfWorkProps) {
   const { data } = useSuspenseQuery(trpc.boardSummary.getTypesOfWork.queryOptions({ boardId }));
 
   return (
-    <Card className="h-full rounded-xl border p-5">
+    <Card className="h-full border p-5">
       <CardHeader className="p-0 pb-4">
         <CardTitle className="text-base font-semibold">Types of work</CardTitle>
         <CardDescription>Get a breakdown of work items by their types.</CardDescription>

@@ -37,7 +37,7 @@ export function PriorityBreakdown({ boardId }: PriorityBreakdownProps) {
   }));
 
   return (
-    <Card className="h-full rounded-xl border p-5">
+    <Card className="h-full border p-5">
       <CardHeader className="p-0 pb-4">
         <CardTitle className="text-base font-semibold">Priority breakdown</CardTitle>
         <CardDescription>Get a holistic view of how work is being prioritized.</CardDescription>

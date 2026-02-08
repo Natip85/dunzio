@@ -25,7 +25,7 @@ export function TeamWorkload({ boardId }: TeamWorkloadProps) {
   const { data } = useSuspenseQuery(trpc.boardSummary.getTeamWorkload.queryOptions({ boardId }));
 
   return (
-    <Card className="h-full rounded-xl border p-5">
+    <Card className="h-full border p-5">
       <CardHeader className="p-0 pb-4">
         <CardTitle className="text-base font-semibold">Team workload</CardTitle>
         <CardDescription>Monitor the capacity of your team.</CardDescription>

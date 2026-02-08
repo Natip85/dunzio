@@ -4,6 +4,12 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { GithubIcon, Globe, Loader2, Lock, Plus, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useTRPC } from "@/trpc";
@@ -146,38 +152,48 @@ export function RepoSelector() {
   }
 
   return (
-    <div className="flex max-h-80 flex-col gap-1 overflow-y-auto">
-      {availableRepos.map((repo) => (
-        <div
-          key={repo.id}
-          className="hover:bg-muted/50 flex items-center justify-between rounded-md px-3 py-2 transition-colors"
-        >
-          <div className="flex min-w-0 flex-1 items-center gap-2">
-            <GithubIcon className="text-muted-foreground size-3.5 shrink-0" />
-            <span className="truncate text-sm">{repo.fullName}</span>
-            {repo.isPrivate && <Lock className="text-muted-foreground size-3 shrink-0" />}
-          </div>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() =>
-              connectMutation.mutate({
-                githubRepoId: repo.id,
-                owner: repo.owner,
-                name: repo.name,
-                fullName: repo.fullName,
-                isPrivate: repo.isPrivate,
-              })
-            }
-            disabled={connectMutation.isPending}
-          >
-            {connectMutation.isPending ?
-              <Loader2 className="size-3.5 animate-spin" />
-            : <Plus className="size-3.5" />}
-            Connect
-          </Button>
-        </div>
-      ))}
-    </div>
+    <Accordion
+      type="single"
+      collapsible
+    >
+      <AccordionItem value="github">
+        <AccordionTrigger className="bg-primary/50 p-3">Add repository</AccordionTrigger>
+        <AccordionContent>
+          <div className="flex max-h-80 flex-col gap-1 overflow-y-auto">
+            {availableRepos.map((repo) => (
+              <div
+                key={repo.id}
+                className="hover:bg-muted/50 flex items-center justify-between rounded-md px-3 py-2 transition-colors"
+              >
+                <div className="flex min-w-0 flex-1 items-center gap-2">
+                  <GithubIcon className="text-muted-foreground size-3.5 shrink-0" />
+                  <span className="truncate text-sm">{repo.fullName}</span>
+                  {repo.isPrivate && <Lock className="text-muted-foreground size-3 shrink-0" />}
+                </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() =>
+                    connectMutation.mutate({
+                      githubRepoId: repo.id,
+                      owner: repo.owner,
+                      name: repo.name,
+                      fullName: repo.fullName,
+                      isPrivate: repo.isPrivate,
+                    })
+                  }
+                  disabled={connectMutation.isPending}
+                >
+                  {connectMutation.isPending ?
+                    <Loader2 className="size-3.5 animate-spin" />
+                  : <Plus className="size-3.5" />}
+                  Connect
+                </Button>
+              </div>
+            ))}
+          </div>{" "}
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
   );
 }

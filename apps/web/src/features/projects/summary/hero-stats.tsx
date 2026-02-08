@@ -57,7 +57,7 @@ export function HeroStats({ boardId }: HeroStatsProps) {
         return (
           <div
             key={stat.key}
-            className="bg-card flex items-center gap-3 rounded-xl border p-4"
+            className="bg-card flex items-center gap-3 border p-4"
           >
             <div
               className={`flex size-10 shrink-0 items-center justify-center rounded-lg ${stat.bgColor}`}

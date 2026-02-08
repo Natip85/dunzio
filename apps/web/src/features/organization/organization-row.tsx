@@ -87,10 +87,7 @@ export function OrganizationRow({ organization, activeOrgId, memberCount }: Orga
       <TableCell>
         <div className="flex items-center justify-end gap-3">
           {!isActive && (
-            <Button
-              variant="ghost"
-              onClick={handleSetActive}
-            >
+            <Button onClick={handleSetActive}>
               <CheckCircle2 className="size-4" />
               Set as Active
             </Button>

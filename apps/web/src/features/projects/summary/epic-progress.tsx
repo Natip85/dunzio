@@ -15,7 +15,7 @@ export function EpicProgress({ boardId }: EpicProgressProps) {
   const { data } = useSuspenseQuery(trpc.boardSummary.getEpicProgress.queryOptions({ boardId }));
 
   return (
-    <Card className="h-full rounded-xl border p-5">
+    <Card className="h-full border p-5">
       <CardHeader className="p-0 pb-4">
         <CardTitle className="text-base font-semibold">Epic progress</CardTitle>
         <CardDescription>See how your epics are progressing at a glance.</CardDescription>
