@@ -139,7 +139,7 @@ export function TaskEditorToolbar({ editor, editorState }: TaskEditorToolbarProp
 
       <div className="bg-border h-6 w-px" />
 
-      {/* Formatting Popover (keeps toolbar compact) */}
+      {/* formatting Popover (keeps toolbar compact) */}
       <Popover>
         <PopoverTrigger asChild>
           <Button
