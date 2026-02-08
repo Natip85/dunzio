@@ -1,6 +1,7 @@
 "use client";
 
 import type { JSONContent } from "@tiptap/react";
+import { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
@@ -58,6 +59,7 @@ type EditTaskFormProps = {
   columns: BoardColumn[];
   users: UserOption[];
   onSuccess?: () => void;
+  onDirtyChange?: (isDirty: boolean) => void;
 };
 
 const ISSUE_TYPES = [
@@ -76,7 +78,13 @@ const PRIORITIES = [
   { value: "highest", label: "Highest" },
 ] as const;
 
-export function EditTaskForm({ task, columns, users, onSuccess }: EditTaskFormProps) {
+export function EditTaskForm({
+  task,
+  columns,
+  users,
+  onSuccess,
+  onDirtyChange,
+}: EditTaskFormProps) {
   const trpc = useTRPC();
   const queryClient = useQueryClient();
 
@@ -93,6 +101,12 @@ export function EditTaskForm({ task, columns, users, onSuccess }: EditTaskFormPr
       assigneeId: task.assigneeId ?? UNASSIGNED_VALUE,
     },
   });
+
+  const { isDirty } = form.formState;
+
+  useEffect(() => {
+    onDirtyChange?.(isDirty);
+  }, [isDirty, onDirtyChange]);
 
   const updateTaskMutation = useMutation(
     trpc.task.update.mutationOptions({

@@ -21,6 +21,7 @@ import { boardColumn, issue, issueLabel, project } from "@dunzio/db/schema/proje
 import { createIssueSchema, issueFilterSchema, updateIssueSchema } from "@dunzio/db/validators";
 
 import type { Context } from "../trpc";
+import { deleteUploadThingFilesForTasks } from "../lib/uploadthing";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 
 // Time thresholds for "recently updated" filter (in hours)
@@ -448,6 +449,16 @@ export const taskRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const { db } = ctx;
 
+      // Fetch task content before deleting to clean up UploadThing images
+      const task = await db.query.issue.findFirst({
+        where: eq(issue.id, input.id),
+        columns: { content: true },
+      });
+
+      if (task) {
+        await deleteUploadThingFilesForTasks([task]);
+      }
+
       await db.delete(issue).where(eq(issue.id, input.id));
 
       return { success: true };
@@ -460,6 +471,14 @@ export const taskRouter = createTRPCRouter({
   deleteMany: protectedProcedure
     .input(z.object({ ids: z.array(z.string()).min(1) }))
     .mutation(async ({ ctx, input }) => {
+      // Fetch tasks content before deleting to clean up UploadThing images
+      const tasks = await ctx.db.query.issue.findMany({
+        where: inArray(issue.id, input.ids),
+        columns: { content: true },
+      });
+
+      await deleteUploadThingFilesForTasks(tasks);
+
       await ctx.db.delete(issue).where(inArray(issue.id, input.ids));
 
       return { success: true };

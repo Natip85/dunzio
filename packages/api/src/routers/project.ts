@@ -6,6 +6,7 @@ import { member, user } from "@dunzio/db/schema/auth";
 import { board, boardColumn, issue, project } from "@dunzio/db/schema/projects";
 import { columnSchema, deleteProjectSchema, updateProjectSchema } from "@dunzio/db/validators";
 
+import { deleteUploadThingFilesForTasks } from "../lib/uploadthing";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 
 /**
@@ -765,6 +766,14 @@ export const projectRouter = createTRPCRouter({
         message: "You don't have permission to delete this project",
       });
     }
+
+    // Fetch all project tasks' content to clean up UploadThing images before cascade delete
+    const projectTasks = await db.query.issue.findMany({
+      where: eq(issue.projectId, input.projectId),
+      columns: { content: true },
+    });
+
+    await deleteUploadThingFilesForTasks(projectTasks);
 
     // Delete the project (cascade will handle boards, columns, and issues)
     await db.delete(project).where(eq(project.id, input.projectId));
