@@ -1,6 +1,7 @@
 "use client";
 
 import type { JSONContent } from "@tiptap/react";
+import { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
@@ -46,6 +47,7 @@ type AddTaskFormProps = {
   users: UserOption[];
   defaultColumnId?: string;
   onSuccess?: () => void;
+  onDirtyChange?: (isDirty: boolean) => void;
 };
 
 const ISSUE_TYPES = [
@@ -70,6 +72,7 @@ export function AddTaskForm({
   users,
   defaultColumnId,
   onSuccess,
+  onDirtyChange,
 }: AddTaskFormProps) {
   const trpc = useTRPC();
   const queryClient = useQueryClient();
@@ -86,6 +89,12 @@ export function AddTaskForm({
       assigneeId: undefined,
     },
   });
+
+  const { isDirty } = form.formState;
+
+  useEffect(() => {
+    onDirtyChange?.(isDirty);
+  }, [isDirty, onDirtyChange]);
 
   const createTaskMutation = useMutation(
     trpc.task.create.mutationOptions({

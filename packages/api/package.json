@@ -16,6 +16,9 @@
     },
     "./routers/*": {
       "default": "./src/routers/*.ts"
+    },
+    "./uploadthing": {
+      "default": "./src/lib/uploadthing.ts"
     }
   },
   "scripts": {
@@ -33,6 +36,7 @@
     "drizzle-orm": "^0.45.1",
     "next": "catalog:",
     "superjson": "^2.2.2",
+    "uploadthing": "^7.7.4",
     "zod": "catalog:"
   },
   "devDependencies": {

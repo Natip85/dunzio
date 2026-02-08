@@ -53,23 +53,23 @@ export default async function ProfilePage() {
       >
         <TabsList className="w-full">
           <TabsTrigger value="profile">
-            <User />
+            <User className="mr-1 size-4" />
             <span className="max-sm:hidden">Profile</span>
           </TabsTrigger>
           <TabsTrigger value="security">
-            <Shield />
+            <Shield className="mr-1 size-4" />
             <span className="max-sm:hidden">Security</span>
           </TabsTrigger>
           <TabsTrigger value="sessions">
-            <Key />
+            <Key className="mr-1 size-4" />
             <span className="max-sm:hidden">Sessions</span>
           </TabsTrigger>
           <TabsTrigger value="accounts">
-            <LinkIcon />
+            <LinkIcon className="mr-1 size-4" />
             <span className="max-sm:hidden">Accounts</span>
           </TabsTrigger>
           <TabsTrigger value="danger">
-            <Trash2 />
+            <Trash2 className="mr-1 size-4" />
             <span className="max-sm:hidden">Danger</span>
           </TabsTrigger>
         </TabsList>

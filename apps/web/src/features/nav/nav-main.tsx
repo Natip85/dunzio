@@ -4,7 +4,7 @@ import type { Route } from "next";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
-import { ChevronRight, FolderKanban, GithubIcon, Kanban, ShieldBan, Users2 } from "lucide-react";
+import { ChevronRight, FolderKanban, GitBranch, Kanban, ShieldBan, Users2 } from "lucide-react";
 
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import {
@@ -161,7 +161,7 @@ export function NavMain() {
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
-            <SidebarGroupLabel>Settings</SidebarGroupLabel>
+            <SidebarGroupLabel>Integrations</SidebarGroupLabel>
             <SidebarMenuItem key="integrations">
               <SidebarMenuButton
                 asChild
@@ -169,7 +169,7 @@ export function NavMain() {
                 tooltip="Integrations"
               >
                 <Link href={"/settings/integrations" as Route}>
-                  <GithubIcon className="size-4" />
+                  <GitBranch className="size-4" />
                   <span>Integrations</span>
                 </Link>
               </SidebarMenuButton>

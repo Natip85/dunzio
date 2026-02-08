@@ -1,7 +1,18 @@
 "use client";
 
+import { useCallback, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import {
   Dialog,
   DialogContent,
@@ -37,47 +48,99 @@ export function EditTaskDialog({ columns, users }: EditTaskDialogProps) {
   const selectedIssueId = searchParams.selectedIssue;
 
   const isOpen = selectedIssueId !== null;
+  const [isDirty, setIsDirty] = useState(false);
+  const [showDiscardAlert, setShowDiscardAlert] = useState(false);
 
   const { data: task, isLoading } = useQuery({
     ...trpc.task.getById.queryOptions({ id: selectedIssueId ?? "" }),
     enabled: isOpen && selectedIssueId !== null,
   });
 
-  const handleOpenChange = (open: boolean) => {
-    if (!open) {
-      void closeIssue();
-    }
-  };
+  const handleOpenChange = useCallback(
+    (open: boolean) => {
+      if (!open && isDirty) {
+        setShowDiscardAlert(true);
+        return;
+      }
+      if (!open) {
+        void closeIssue();
+      }
+    },
+    [isDirty, closeIssue]
+  );
+
+  const handleDiscard = useCallback(() => {
+    setShowDiscardAlert(false);
+    setIsDirty(false);
+    void closeIssue();
+  }, [closeIssue]);
 
   return (
-    <Dialog
-      open={isOpen}
-      onOpenChange={handleOpenChange}
-    >
-      <DialogContent className="flex max-h-[85vh] flex-col sm:max-w-lg">
-        <DialogHeader className="shrink-0">
-          <DialogTitle>{task ? `Edit ${task.key}` : "Edit Task"}</DialogTitle>
-          <DialogDescription>
-            Make changes to this task. Click save when you're done.
-          </DialogDescription>
-        </DialogHeader>
+    <>
+      <Dialog
+        open={isOpen}
+        onOpenChange={handleOpenChange}
+      >
+        <DialogContent
+          className="flex max-h-[85vh] flex-col sm:max-w-lg"
+          onInteractOutside={(e) => {
+            if (isDirty) e.preventDefault();
+          }}
+          onEscapeKeyDown={(e) => {
+            if (isDirty) {
+              e.preventDefault();
+              setShowDiscardAlert(true);
+            }
+          }}
+        >
+          <DialogHeader className="shrink-0">
+            <DialogTitle>{task ? `Edit ${task.key}` : "Edit Task"}</DialogTitle>
+            <DialogDescription>
+              Make changes to this task. Click save when you're done.
+            </DialogDescription>
+          </DialogHeader>
 
-        <div className="flex-1 overflow-y-auto">
-          {isLoading ?
-            <EditTaskFormSkeleton />
-          : task ?
-            <>
-              <EditTaskForm
-                task={task}
-                columns={columns}
-                users={users}
-                onSuccess={() => void closeIssue()}
-              />
-              <TaskGitHubLinks issueId={task.id} />
-            </>
-          : null}
-        </div>
-      </DialogContent>
-    </Dialog>
+          <div className="flex-1 overflow-y-auto">
+            {isLoading ?
+              <EditTaskFormSkeleton />
+            : task ?
+              <>
+                <EditTaskForm
+                  task={task}
+                  columns={columns}
+                  users={users}
+                  onSuccess={() => void closeIssue()}
+                  onDirtyChange={setIsDirty}
+                />
+                <TaskGitHubLinks issueId={task.id} />
+              </>
+            : null}
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      <AlertDialog
+        open={showDiscardAlert}
+        onOpenChange={setShowDiscardAlert}
+      >
+        <AlertDialogContent size="sm">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Discard unsaved changes?</AlertDialogTitle>
+            <AlertDialogDescription>
+              You have unsaved changes that will be lost if you close this dialog.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Continue editing</AlertDialogCancel>
+            <AlertDialogAction
+              variant="destructive"
+              onClick={handleDiscard}
+            >
+              Discard
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   );
 }
