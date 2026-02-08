@@ -43,7 +43,7 @@ export default async function OrganizationsPage() {
                   <TableHead>Status</TableHead>
                   <TableHead>Members</TableHead>
                   <TableHead>Created</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
+                  <TableHead></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
